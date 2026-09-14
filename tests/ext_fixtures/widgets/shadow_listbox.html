@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — listbox inside an open shadow root</title>
+  </head>
+  <body>
+    <!-- The control is the shadow HOST itself; its listbox and options live
+         entirely inside its own open shadow root. document.querySelectorAll
+         never sees into a shadow root, so this only works through the
+         shadow-piercing query (ynQueryDeep) the driver uses to find both
+         the control-declaring role and, later, the popup and its options. -->
+    <yn-country-picker id="combo"></yn-country-picker>
+
+    <script>
+      (function () {
+        class YnCountryPicker extends HTMLElement {
+          connectedCallback() {
+            this.setAttribute("role", "combobox");
+            this.setAttribute("aria-haspopup", "listbox");
+            this.setAttribute("aria-expanded", "false");
+            this.tabIndex = 0;
+            const root = this.attachShadow({ mode: "open" });
+            root.innerHTML =
+              '<span id="label">Choose a country</span>' +
+              '<ul id="list" hidden>' +
+              '<li role="option">Canada</li>' +
+              '<li role="option">United States</li>' +
+              '<li role="option">United Kingdom</li>' +
+              '<li role="option">Australia</li>' +
+              "</ul>";
+            const list = root.getElementById("list");
+            const open = () => {
+              // role is added only NOW, on open — before this the shadow
+              // subtree carries no [role=listbox] node at all, so the
+              // driver's before/after diff (it has no aria-controls/owns to
+              // go on) correctly sees this as newly opened rather than
+              // excluding it as something that already existed.
+              list.setAttribute("role", "listbox");
+              list.hidden = false;
+              this.setAttribute("aria-expanded", "true");
+            };
+            this.addEventListener("pointerdown", open);
+            this.addEventListener("mousedown", open);
+            list.addEventListener("click", (e) => {
+              const li = e.target.closest("[role='option']");
+              if (!li) return;
+              li.setAttribute("aria-selected", "true");
+              root.getElementById("label").textContent = li.textContent;
+              list.hidden = true;
+              this.setAttribute("aria-expanded", "false");
+            });
+          }
+        }
+        customElements.define("yn-country-picker", YnCountryPicker);
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

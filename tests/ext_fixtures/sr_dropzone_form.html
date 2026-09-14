@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — SmartRecruiters oneclick-ui (spl-dropzone fixture)</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 640px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="text"],
+      input[type="email"] {
+        width: 100%;
+        max-width: 320px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+      /* Host chrome only — real UI is in open shadow (mirrors SPL) */
+      spl-dropzone,
+      spl-file-upload {
+        display: block;
+        margin: 12px 0 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      A SmartRecruiters upload-widget DOM fixture: reproduces the real
+      oneclick-ui resume-attach widget's observable shape so the extension's
+      SmartRecruiters adapter can be exercised without a live SR page:
+        - OPEN shadow custom element <spl-dropzone>
+        - Hidden <input type=file> inside the shadow
+        - Drop-driven (input.change alone does NOT show the chip)
+        - Success = filename chip + Remove control
+      form action includes "smartrecruiters" so detect.js DOM fingerprint
+      selects the SmartRecruiters adapter on this local fixture URL.
+    -->
+    <h1>Easy Apply — Acme (SR dropzone fixture)</h1>
+    <form
+      id="application-form"
+      action="https://jobs.smartrecruiters.com/oneclick-ui/fixture-apply"
+      method="post"
+      class="smartrecruiters-oneclick"
+    >
+      <p>
+        <label for="first-name-input">First name *</label>
+        <input
+          type="text"
+          id="first-name-input"
+          name="firstName"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="last-name-input">Last name *</label>
+        <input
+          type="text"
+          id="last-name-input"
+          name="lastName"
+          autocomplete="family-name"
+        />
+      </p>
+      <p>
+        <label for="email-input">Email *</label>
+        <input
+          type="email"
+          id="email-input"
+          name="email"
+          autocomplete="email"
+        />
+      </p>
+      <p>
+        <label for="confirm-email-input">Confirm email *</label>
+        <input
+          type="email"
+          id="confirm-email-input"
+          name="confirmEmail"
+          autocomplete="email"
+        />
+      </p>
+
+      <h2>Resume *</h2>
+      <spl-dropzone id="resume-dropzone"></spl-dropzone>
+
+      <p>
+        <button type="submit" id="submit-btn">Next</button>
+      </p>
+    </form>
+
+    <script>
+      window.__submitted = false;
+      window.__dropAccepted = false;
+      window.__changeOnly = 0;
+      window.__attachedName = "";
+
+      var form = document.getElementById("application-form");
+      var submitBtn = document.getElementById("submit-btn");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      submitBtn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+
+      /**
+       * Best-effort model of SPL <spl-dropzone>: open shadow, hidden file
+       * input, drop handlers on the area. input.change alone leaves the
+       * empty-state prompt (observed on a live posting: FileList set, chip absent).
+       */
+      class SplDropzone extends HTMLElement {
+        connectedCallback() {
+          if (this._wired) return;
+          this._wired = true;
+          var root = this.attachShadow({ mode: "open" });
+          root.innerHTML =
+            "<style>" +
+            ".spl-dropzone__area{border:2px dashed #3b82f6;border-radius:8px;" +
+            "padding:20px;text-align:center;color:#2563eb;cursor:pointer;}" +
+            ".spl-dropzone__prompt{display:block;font-weight:600;}" +
+            ".spl-dropzone__limit{display:block;font-size:12px;color:#64748b;margin-top:4px;}" +
+            "input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}" +
+            ".spl-file-upload__chip{display:flex;align-items:center;gap:8px;" +
+            "justify-content:center;padding:12px;border:1px solid #10b981;" +
+            "border-radius:8px;background:#ecfdf5;color:#065f46;}" +
+            ".spl-file-upload__filename{font-weight:600;}" +
+            "</style>" +
+            '<div class="spl-dropzone__area" part="drop">' +
+            '  <input type="file" accept=".pdf,.doc,.docx" tabindex="-1" />' +
+            '  <span class="spl-dropzone__prompt">Choose a file or drop it here</span>' +
+            '  <span class="spl-dropzone__limit">10MB size limit</span>' +
+            "</div>";
+
+          var area = root.querySelector(".spl-dropzone__area");
+          var input = root.querySelector('input[type="file"]');
+          var self = this;
+
+          function showSuccess(name) {
+            window.__dropAccepted = true;
+            window.__attachedName = name || "cv.pdf";
+            // Keep the hidden file input (engine may highlight it) — only swap
+            // the empty-state chrome for the success chip.
+            var prompt = area.querySelector(".spl-dropzone__prompt");
+            var limit = area.querySelector(".spl-dropzone__limit");
+            if (prompt) prompt.remove();
+            if (limit) limit.remove();
+            if (!area.querySelector(".spl-file-upload__chip")) {
+              var chip = document.createElement("div");
+              chip.className = "spl-file-upload__chip";
+              chip.setAttribute("data-testid", "uploaded-file");
+              chip.innerHTML =
+                '<span class="spl-file-upload__filename">' +
+                (name || "cv.pdf") +
+                "</span>" +
+                '<button type="button" aria-label="Remove">Remove</button>';
+              area.appendChild(chip);
+            }
+          }
+
+          // Primary path: drop (or dragover + drop) on the area.
+          ["dragenter", "dragover"].forEach(function (type) {
+            area.addEventListener(type, function (e) {
+              e.preventDefault();
+              e.stopPropagation();
+            });
+          });
+          area.addEventListener("drop", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var file =
+              e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+            if (file) showSuccess(file.name);
+          });
+
+          // Input change alone does NOT confirm — mirrors live SR (amber when
+          // only FileList is set without the component accepting the drop).
+          input.addEventListener("change", function () {
+            window.__changeOnly += 1;
+            // intentionally no showSuccess
+          });
+
+          // Expose for assertions
+          self._showSuccess = showSuccess;
+          self._input = input;
+        }
+      }
+      customElements.define("spl-dropzone", SplDropzone);
+      // Alias used in research notes
+      if (!customElements.get("spl-file-upload")) {
+        customElements.define("spl-file-upload", class extends SplDropzone {});
+      }
+    </script>
+  </body>
+</html>

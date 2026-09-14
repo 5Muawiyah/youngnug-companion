@@ -1,0 +1,6 @@
+fixture: tests/ext_fixtures/screening_freetext_save_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+textarea	textarea	q_empty	leadership_story	-	yes	no	Describe a time you led a team leadership_story q_empty

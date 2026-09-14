@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co</title>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <p>
+      This employer's careers widget renders its own form inside an OPEN shadow
+      root (a common embed pattern) — the light DOM around it has no fillable
+      fields at all.
+    </p>
+    <div id="widget-host"></div>
+    <script>
+      window.__submitted = false;
+      var host = document.getElementById("widget-host");
+      var shadow = host.attachShadow({ mode: "open" });
+      shadow.innerHTML =
+        '<form id="acme-apply-form">' +
+        "<p>" +
+        '<label for="shadow_email">Email</label>' +
+        '<input type="email" id="shadow_email" name="email" autocomplete="email">' +
+        "</p>" +
+        "<p>" +
+        '<button type="submit" id="submit-btn">Submit application</button>' +
+        "</p>" +
+        "</form>";
+      var form = shadow.getElementById("acme-apply-form");
+      var btn = shadow.getElementById("submit-btn");
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Multi-column formless signup — tier-3 nesting-proof wall</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 720px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      .outer {
+        border: 1px solid #ccc;
+        padding: 16px;
+        border-radius: 6px;
+      }
+      .grid {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .colL,
+      .colR {
+        flex: 1 1 280px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        max-width: 320px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Judge repro (tier-3 nesting edge): formless, container-less (NO
+      login/signin/signup/register/account id or class), heading-less
+      multi-column signup. Password sits >3 ancestor hops from the shared
+      .grid / .outer with the sibling account-email. A FIXED hop cap walls
+      only the password column and would FILL mc_email with real PII.
+      Nesting-proof tier-3 must scope to the outermost content wrapper
+      (.outer) so mc_email stays EMPTY.
+    -->
+    <div class="outer">
+      <div class="grid">
+        <section class="colL">
+          <label for="mc_email">Email</label>
+          <input
+            id="mc_email"
+            type="email"
+            name="email"
+            autocomplete="email"
+            value=""
+          />
+        </section>
+        <section class="colR">
+          <!-- Deep nest so password is >3 hops from .grid (defeats hop-cap 3) -->
+          <div class="nest1">
+            <div class="nest2">
+              <div class="nest3">
+                <div class="nest4">
+                  <div class="nest5">
+                    <input
+                      id="mc_pw"
+                      type="password"
+                      name="password"
+                      autocomplete="new-password"
+                      value=""
+                    />
+                    <input
+                      id="mc_pw2"
+                      type="password"
+                      name="password2"
+                      autocomplete="new-password"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script>
+      window.__submitted = false;
+    </script>
+  </body>
+</html>

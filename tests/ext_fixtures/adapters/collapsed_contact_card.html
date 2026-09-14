@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Collapsed contact-details summary card</title></head>
+<body>
+<section id="contact-card" aria-label="Contact details">
+  <div class="summary">
+    <p>Ada Lovelace</p>
+    <p id="phone-summary">Not provided</p>
+  </div>
+  <button type="button" id="edit-btn">Edit</button>
+  <input id="phone-field" disabled />
+</section>
+<script>
+  window.__editClicked = false;
+  document.getElementById("edit-btn").addEventListener("click", function () {
+    window.__editClicked = true;
+    document.getElementById("phone-field").removeAttribute("disabled");
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a country / region / city cascading select chain</title>
+  </head>
+  <body>
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="">Choose…</option>
+      <option value="uk">United Kingdom</option>
+      <option value="fr">France</option>
+    </select>
+
+    <label for="region">Region</label>
+    <select id="region"><option value="">Choose a country first</option></select>
+
+    <label for="city">City</label>
+    <select id="city"><option value="">Choose a region first</option></select>
+
+    <script>
+      (function () {
+        const country = document.getElementById("country");
+        const region = document.getElementById("region");
+        const city = document.getElementById("city");
+        const REGIONS = {
+          uk: ["England", "Scotland", "Wales"],
+          fr: ["Île-de-France", "Provence"],
+        };
+        const CITIES = {
+          England: ["London", "Manchester"],
+          Scotland: ["Edinburgh", "Glasgow"],
+          Wales: ["Cardiff"],
+        };
+        function fillOptions(sel, values, placeholder) {
+          sel.innerHTML = "";
+          const ph = document.createElement("option");
+          ph.value = "";
+          ph.textContent = placeholder;
+          sel.appendChild(ph);
+          for (const v of values) {
+            const o = document.createElement("option");
+            o.value = v.toLowerCase();
+            o.textContent = v;
+            sel.appendChild(o);
+          }
+        }
+        country.addEventListener("change", () => {
+          setTimeout(() => {
+            fillOptions(region, REGIONS[country.value] || [], "Choose a region");
+            fillOptions(city, [], "Choose a region first");
+          }, 30);
+        });
+        region.addEventListener("change", () => {
+          setTimeout(() => {
+            const label = [...region.options].find((o) => o.value === region.value);
+            const key = label ? label.textContent : "";
+            fillOptions(city, CITIES[key] || [], "Choose a city");
+          }, 30);
+        });
+      })();
+
+      window.ynTestCascade = async function (plan) {
+        const levels = [
+          document.getElementById("country"),
+          document.getElementById("region"),
+          document.getElementById("city"),
+        ];
+        const r = await ynDriveCascade(levels, plan.parts);
+        return {
+          ok: r.ok,
+          report: {
+            stoppedAtLevel: r.stoppedAtLevel,
+            reason: r.reason,
+            countryText:
+              levels[0].options[levels[0].selectedIndex]?.textContent || "",
+            regionText:
+              levels[1].options[levels[1].selectedIndex]?.textContent || "",
+            cityText: levels[2].options[levels[2].selectedIndex]?.textContent || "",
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co (Wizard)</title>
+  </head>
+  <body>
+    <div id="wizard-root"></div>
+    <script>
+      window.__submitted = false;
+      // Only a REAL click on "Save and continue" (a user, or — in production —
+      // an adapter's explicit wizard.advance) may ever set this. The generic
+      // engine has no adapter registered for this fixture (unknown ATS), so it
+      // must reach the end of the fill with this still false and step 1 still
+      // on screen — heuristics alone never click a button.
+      window.__advancedToStep2 = false;
+
+      history.replaceState({ step: 1 }, "", location.pathname);
+
+      function render(step) {
+        var root = document.getElementById("wizard-root");
+        if (step === 1) {
+          root.innerHTML =
+            "<h1>Apply to Acme Test Co — Step 1 of 2</h1>" +
+            '<form id="step1-form">' +
+            "<p>" +
+            '<label for="first_name">First name</label>' +
+            '<input type="text" id="first_name" name="first_name" autocomplete="given-name">' +
+            "</p>" +
+            "<p>" +
+            '<label for="email">Email</label>' +
+            '<input type="email" id="email" name="email" autocomplete="email">' +
+            "</p>" +
+            "<p>" +
+            '<button type="button" id="continue-btn">Save and continue</button>' +
+            "</p>" +
+            "</form>";
+          document
+            .getElementById("continue-btn")
+            .addEventListener("click", advanceToStep2);
+        } else {
+          root.innerHTML =
+            "<h1>Apply to Acme Test Co — Step 2 of 2</h1>" +
+            '<form id="step2-form">' +
+            "<p>" +
+            '<label for="phone">Phone</label>' +
+            '<input type="tel" id="phone" name="phone">' +
+            "</p>" +
+            "<p>" +
+            '<button type="submit" id="submit-btn">Submit application</button>' +
+            "</p>" +
+            "</form>";
+          var f = document.getElementById("step2-form");
+          var btn = document.getElementById("submit-btn");
+          btn.addEventListener("click", function () {
+            window.__submitted = true;
+          });
+          f.addEventListener("submit", function (e) {
+            e.preventDefault();
+            window.__submitted = true;
+          });
+        }
+      }
+
+      function advanceToStep2() {
+        window.__advancedToStep2 = true;
+        history.pushState({ step: 2 }, "", location.pathname + "#step2");
+        render(2);
+      }
+
+      window.addEventListener("popstate", function (e) {
+        render((e.state && e.state.step) || 1);
+      });
+
+      render(1);
+    </script>
+  </body>
+</html>

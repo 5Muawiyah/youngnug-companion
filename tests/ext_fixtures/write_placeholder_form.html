@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a placeholder select and a dial-code-only phone</title>
+  </head>
+  <body>
+    <label for="country_select">Country</label>
+    <select id="country_select">
+      <option value="0">Please select</option>
+      <option value="uk">United Kingdom</option>
+      <option value="fr">France</option>
+    </select>
+
+    <label for="phone">Phone</label>
+    <input id="phone" type="tel" value="+44" />
+
+    <script>
+      window.ynTestPlaceholderFill = async function () {
+        const selEl = document.getElementById("country_select");
+        const phoneEl = document.getElementById("phone");
+        const intents = [
+          {
+            el: selEl,
+            kind: "select",
+            value: "United Kingdom",
+            fieldKey: "address.country",
+            confidence: "exact",
+          },
+          {
+            el: phoneEl,
+            kind: "text",
+            value: "07700 900123",
+            fieldKey: "contact.phone",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        return {
+          ok: true,
+          report: {
+            selectValue: selEl.value,
+            phoneValue: phoneEl.value,
+            filled: report.filled.map((f) => f.fieldKey),
+            userKept: report.user_kept.map((f) => f.fieldKey),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

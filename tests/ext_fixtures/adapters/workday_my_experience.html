@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Workday My Experience (reconstructed, unverified)</title></head>
+<body>
+<div data-automation-id="progressBar">
+  <ol>
+    <li data-automation-id="progressBarInactiveStep">step 1 of 7Create Account/Sign In</li>
+    <li data-automation-id="progressBarInactiveStep">step 2 of 7My Information</li>
+    <li data-automation-id="progressBarActiveStep">current step 3 of 7My Experience</li>
+    <li data-automation-id="progressBarInactiveStep">step 4 of 7Application Questions 1 of 2</li>
+  </ol>
+</div>
+<div data-automation-id="Work-experience-section">
+  <span id="add-and-submit-decoy" role="button" aria-label="Add and Submit">Add and Submit</span>
+  <div data-automation-id="Job-History-Panel-Set-Item-List" id="row-list"></div>
+  <button type="button" id="add-btn" data-automation-id="add-button">Add</button>
+  <span id="count-text">0 of 10 entries added</span>
+</div>
+<script>
+  window.__decoyClicked = false;
+  document.getElementById("add-and-submit-decoy").addEventListener("click", function () {
+    window.__decoyClicked = true;
+  });
+  (function () {
+    var n = 0;
+    var cap = 10;
+    document.getElementById("add-btn").addEventListener("click", function () {
+      if (n >= cap) return;
+      n += 1;
+      var row = document.createElement("div");
+      row.setAttribute("data-automation-id", "Job-History-Panel-Set-Item");
+      row.innerHTML =
+        '<input data-automation-id="jobTitle" />' +
+        '<input data-automation-id="companyName" />' +
+        '<input type="checkbox" data-automation-id="currentlyWorkHere" />' +
+        '<textarea data-automation-id="roleDescription"></textarea>';
+      document.getElementById("row-list").appendChild(row);
+      document.getElementById("count-text").textContent =
+        n + " of " + cap + " entries added";
+    });
+  })();
+</script>
+</body>
+</html>

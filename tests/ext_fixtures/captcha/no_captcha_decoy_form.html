@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Security team application</title></head>
+<body>
+  <!-- Decoys: text that CONTAINS words the captcha detector watches for
+       ("human", "security check"-adjacent) but reads as a real question, not
+       a bot check. None of these three may ever trip the hard stop. -->
+  <form id="app">
+    <label for="first">First name</label>
+    <input id="first" name="first_name" type="text" />
+
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" />
+
+    <label for="hr-name">Human Resources contact name</label>
+    <input id="hr-name" name="hr_contact" type="text" />
+
+    <label for="hr-role">Are you a Human Resources professional?</label>
+    <input id="hr-role" name="is_hr" type="text" />
+
+    <label for="sec-clearance">Do you hold a current security clearance?</label>
+    <input id="sec-clearance" name="security_clearance" type="text" />
+  </form>
+</body>
+</html>

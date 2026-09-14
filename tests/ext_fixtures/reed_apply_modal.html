@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reed application modal - captured</title>
+    <!--
+      Reed 'Application' modal opened by 'Apply now' on a listing in a signed-in session on 2026-08-22, with the cover-letter textarea revealed by its Add button; nothing was submitted and the modal was closed.
+      Reduction (one deterministic function run in the live page): svg innards,
+      script/style/link/iframe, comments, inline style and srcset dropped; src
+      values blanked and href query strings removed; selects with more than
+      eight options keep six plus the selected one (data-fixture-options-
+      trimmed-from); role=listbox lists keep the first and the aria-selected
+      option (same attribute). Personal data replaced with invented values
+      (Sam Example, student@example.com, 07700 900123, SW1A 1AA, Exampletown).
+      Everything else is the markup the site served.
+    -->
+    <style>
+      .hidden, [hidden] { display: none; }
+      .visually-hidden, .a11y-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    </style>
+  </head>
+  <body>
+<div tabindex="-1" role="dialog" class="modal overflow-auto fade apply-job-modal_modal__Y8QOR show d-block" data-modal="true"><div class="modal-dialog modal-dialog-centered" role="document"><div data-qa="apply-job-modal" class="modal-content index-module_content__diodt"><header class="apply-job-modal_modal__header___l5Ps modal-header modal-header-module_header__TkoDV"><h3>Application</h3><button class="modal-header-module_close__uMGR9" type="button" aria-label="Close"></button></header><div class="apply-job-modal_modal__body__ycJxV modal-body modal-body-module_body__Lbq9Z" data-qa="modal-body"><div class="card job-details_card__2qu0h"><span class="job-details_jobTitle__ZfS4M">Trainee Accounts Assistant</span><span>one2one Recruitment</span></div><div class="card about-you_card__K2vbW"><div class="about-you_card__header__OxEP_"><h4 class="about-you_card__title__9R0wJ">About you</h4><button class="btn btn-link" type="button" data-qa="about-you-edit-btn">Edit</button></div><ul class="about-you_card__list___bkrt"><li class="about-you_card__list_intro__eSvMa"><span class="about-you_card__list_name__5Mxbp">Sam Example</span><span class="about-you_card__list_title__4QNOy">Team Member</span></li><li class="about-you_card__list_item__9cZ6O"><svg role="img" xmlns="http://www.w3.org/2000/svg" width="14" height="11" aria-labelledby="svg-letter" class="" viewBox="0 0 14 11" fill="none"></svg>student@example.com</li><li class="about-you_card__list_item__9cZ6O"><svg role="img" width="12" height="12" viewBox="0 0 12 12" fill="none" class="" aria-labelledby="svg-phone" xmlns="http://www.w3.org/2000/svg"></svg>+447700900123</li><li class="about-you_card__list_item__9cZ6O"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Location" class="index-module_icon__Lo-1u" aria-hidden="true"></svg>United Kingdom, Exampletown</li></ul></div><div class="card current-cv_card__T8AmM"><div class="current-cv_wrapper__AcyDd"><div class="current-cv_cvContainer__qI0g_"><div class="current-cv_iconContainer__1DFEd"><svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"></svg></div><b class="current-cv_cvContainer__cvName__umllo current-cv_cvContainer__cvName_mobile__2vjv8" data-qa="cv-name-card">CV-SamExam...eeIn.pdf</b><b class="current-cv_cvContainer__cvName__umllo current-cv_cvContainer__cvName_desktop__iCWFx">CV-SamExample-TraineeIn.pdf</b></div><button class="current-cv_button__5gNgh btn btn-link" type="button" data-qa="UpdateCvBtn">Update</button></div><p class="current-cv_date__AP5ll">Added 18/08/26</p></div><div class="card cover-letter_card__ofiba"><div class="cover-letter_wrapper__7Sh2H"><span><b class="cover-letter_title__bqmjc">Cover letter</b><span>(optional)</span></span></div><textarea class="form-control cover-letter_coverLetterText__6UY1L" aria-invalid="false" name="coverLetterText"></textarea></div><div class="cv_buttonGroup__iNRm2"><div class="cv_buttonGroup__mainWrapper__PEFwz"><button class="cv_buttonGroup__button__WhYWX btn btn-primary" type="button" data-qa="submit-application-btn">Submit application</button></div></div></div></div></div></div>
+    <script>
+      // Tripwires for the never-submit / never-advance proofs. A real site
+      // would navigate; the fixture only records that a click happened.
+      window.__submitted = false;
+      window.__advanced = false;
+      window.__saved = false;
+      document.addEventListener("submit", function (e) { e.preventDefault(); window.__submitted = true; }, true);
+      document.addEventListener("click", function (e) {
+        var b = e.target && e.target.closest ? e.target.closest("button") : null;
+        if (!b) return;
+        var t = (b.textContent || "").replace(/\s+/g, " ").trim() + " " + (b.getAttribute("aria-label") || "");
+        if (/submit/i.test(t)) window.__submitted = true;
+        else if (/^(next|continue) |continue to next step|review your application/i.test(t + " ")) window.__advanced = true;
+        else if (/^save\b/i.test(t)) window.__saved = true;
+      }, true);
+    </script>
+  </body>
+</html>

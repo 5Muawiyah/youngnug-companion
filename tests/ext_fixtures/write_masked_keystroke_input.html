@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — an input that ignores programmatic value sets</title>
+  </head>
+  <body>
+    <label for="masked">Reference number</label>
+    <input id="masked" type="text" />
+
+    <script>
+      (function () {
+        // A real masked-input library shape: it keeps its OWN buffer, built
+        // only from keystrokes it actually saw via keydown, and stamps that
+        // buffer back over the field on every 'input' event that did not
+        // just follow one of its own tracked keydowns — exactly what
+        // discards a plain native-setter write.
+        const el = document.getElementById("masked");
+        let buffer = "";
+        let lastKeydownAt = 0;
+        el.addEventListener("keydown", (e) => {
+          if (e.key && e.key.length === 1) {
+            buffer += e.key;
+            lastKeydownAt = Date.now();
+          }
+        });
+        el.addEventListener("input", () => {
+          if (Date.now() - lastKeydownAt > 5) {
+            if (el.value !== buffer) el.value = buffer;
+          } else {
+            buffer = el.value;
+          }
+        });
+      })();
+
+      window.ynTestVerify = async function (plan) {
+        let typePerCharCalls = 0;
+        const orig = window.ynTypeValuePerChar;
+        window.ynTypeValuePerChar = async function (...args) {
+          typePerCharCalls += 1;
+          return orig.apply(this, args);
+        };
+        const el = document.getElementById("masked");
+        const intents = [
+          {
+            el,
+            kind: "text",
+            value: plan.value,
+            fieldKey: "answers.reference",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        window.ynTypeValuePerChar = orig;
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            unresolved: report.unresolved.map((f) => f.fieldKey),
+            finalValue: el.value,
+            typePerCharCalls,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

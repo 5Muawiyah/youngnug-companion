@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Volunteer application</title></head>
+<body>
+  <!-- both fields are CSS-visible (no display:none, no zero rect, no
+       near-zero opacity) — the only thing wrong is a cookie banner drawn on
+       top of them. Nothing here trips ynIsVisuallyHiddenTrap; only the new
+       elementFromPoint occlusion check can catch it. -->
+  <form id="app">
+    <label for="first">First name</label>
+    <input id="first" name="first_name" type="text" />
+
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" />
+  </form>
+
+  <div id="cookie-overlay" style="position:fixed;inset:0;">
+    We use cookies. <button type="button">Accept all</button>
+  </div>
+</body>
+</html>

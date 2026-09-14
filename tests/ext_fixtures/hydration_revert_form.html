@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Hydration Revert Test (Teamtailor-shaped)</title>
+  </head>
+  <body>
+    <h1>Apply (late-hydration simulation)</h1>
+    <!--
+      Deterministic hydration-revert repro. Teamtailor-shaped (candidate_* ids +
+      #job-application-form) so the teamtailor adapter matches by DOM fingerprint
+      and its hydrationWatch:true engages the filler's full-window re-assert loop.
+      A LATE hydration pass WIPES the two identity fields AFTER the old ~2.3s
+      window (t=2000ms and t=4000ms). A single-shot hold-check performed once at
+      1.4s (before the wipe) would report a false "filled"; the bounded
+      watch-loop keeps re-writing past 4s, so candidate_first_name +
+      candidate_email must HOLD by the time the fill call returns.
+    -->
+    <div id="job-application-form">
+      <form id="apply-form" action="#" onsubmit="return false;">
+        <p>
+          <label for="candidate_first_name">First name</label>
+          <input
+            type="text"
+            id="candidate_first_name"
+            name="candidate[first_name]"
+          />
+        </p>
+        <p>
+          <label for="candidate_last_name">Last name</label>
+          <input
+            type="text"
+            id="candidate_last_name"
+            name="candidate[last_name]"
+          />
+        </p>
+        <p>
+          <label for="candidate_email">Email</label>
+          <input type="email" id="candidate_email" name="candidate[email]" />
+        </p>
+        <p>
+          <label for="candidate_phone">Phone</label>
+          <input type="tel" id="candidate_phone" name="candidate[phone]" />
+        </p>
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      // Late-hydration wipes: clear the two identity fields at 2s and 4s,
+      // dispatching input+change so a framework-style revert is faithful.
+      // (Only first_name + email are wiped; last_name + phone are controls that
+      // must NOT be disturbed — the loop must re-write only what reverted.)
+      function wipe() {
+        for (const id of ["candidate_first_name", "candidate_email"]) {
+          const el = document.getElementById(id);
+          if (el && el.value !== "") {
+            el.value = "";
+            el.dispatchEvent(new Event("input", { bubbles: true }));
+            el.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+        }
+      }
+      setTimeout(wipe, 2000);
+      setTimeout(wipe, 4000);
+    </script>
+  </body>
+</html>

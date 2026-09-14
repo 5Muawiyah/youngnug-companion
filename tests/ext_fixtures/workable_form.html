@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Workable's platform meta tag — one of the three detect.js fingerprint
+         markers (live-verified detection signature).
+         On loopback the URL rule cannot match, so detection must come from
+         the DOM fingerprint (confidence "dom"), exactly like an employer
+         page embedding an ATS. -->
+    <meta name="domain" content="workable.com" />
+    <title>Apply — Acme Test Co (Workable-shaped)</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 560px;
+        margin: 24px auto;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-top: 12px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"],
+      textarea {
+        width: 100%;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      [data-role="dropzone"] {
+        border: 2px dashed #94a3b8;
+        padding: 16px;
+        margin-top: 12px;
+      }
+      .dz-filename {
+        font-weight: 600;
+        color: #0f766e;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Android Engineer — Acme Test Co</h1>
+    <!-- DOM shapes below mirror the LIVE-verified inventory in
+         live apply.workable.com DOM: platform-stable ids/data-ui for
+         identity fields; the phone input has NO id/data-ui (only its wrapper
+         does); the resume file input's id is RANDOM per mount so only
+         data-ui="resume" is stable; GDPR consent checkbox sits in
+         [data-ui="gdpr"]; custom questions carry per-tenant CA_<n> ids;
+         the submit button is button[type=submit][data-ui="apply-button"]. -->
+    <form data-ui="application-form">
+      <label id="firstname_label" for="firstname">First name *</label>
+      <input
+        type="text"
+        id="firstname"
+        name="firstname"
+        data-ui="firstname"
+        aria-labelledby="firstname_label"
+      />
+
+      <label id="lastname_label" for="lastname">Last name *</label>
+      <input
+        type="text"
+        id="lastname"
+        name="lastname"
+        data-ui="lastname"
+        aria-labelledby="lastname_label"
+      />
+
+      <label id="email_label" for="email">Email *</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        data-ui="email"
+        aria-labelledby="email_label"
+      />
+
+      <label id="phone_label">Phone *</label>
+      <div data-ui="phone" class="iti iti--separate-dial-code">
+        <!-- intl-tel-input shape: no id, no data-ui on the input itself -->
+        <input type="tel" name="phone" aria-labelledby="phone_label" />
+      </div>
+
+      <label id="address_label" for="address">Address</label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        data-ui="address"
+        aria-labelledby="address_label"
+      />
+
+      <div data-role="dropzone" id="resume-dropzone">
+        <div id="resume_label">Resume *</div>
+        <!-- RANDOM id, exactly like the live pages
+             (input_files_input_gHNJbJl67Ohd0Wdo) — an adapter selecting by
+             id would break on every mount; data-ui is the stable hook. -->
+        <input
+          type="file"
+          id="input_files_input_gHNJbJl67Ohd0Wdo"
+          data-ui="resume"
+          accept=".pdf,.doc,.docx,.odt,.rtf"
+        />
+        <p id="dz-state">Choose file or drag and drop here</p>
+      </div>
+
+      <label id="cover_letter_label" for="cover_letter"
+        >Cover letter (Optional)</label
+      >
+      <textarea
+        id="cover_letter"
+        name="cover_letter"
+        data-ui="cover_letter"
+        rows="6"
+        aria-labelledby="cover_letter_label"
+      ></textarea>
+
+      <label id="CA_4642_label" for="CA_4642"
+        >If referred by a friend, please confirm their full name &amp; employee
+        ID (Optional)</label
+      >
+      <!-- per-tenant numeric-id custom question: deterministically
+           unclaimable — the adapter must leave it for heuristics, and with
+           no matching profile key it must stay EMPTY. -->
+      <input type="text" id="CA_4642" name="CA_4642" />
+
+      <div data-ui="gdpr">
+        <label>
+          <input type="checkbox" name="gdpr" id="gdpr_cb" />
+          I consent to the processing of my personal data (privacy notice)
+        </label>
+      </div>
+
+      <p>
+        <button type="submit" data-ui="apply-button" id="apply-btn">
+          Submit application
+        </button>
+      </p>
+    </form>
+
+    <script>
+      window.__submitted = false;
+      window.__attachConfirmed = false;
+
+      var form = document.querySelector('form[data-ui="application-form"]');
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      document
+        .getElementById("apply-btn")
+        .addEventListener("click", function () {
+          window.__submitted = true;
+        });
+
+      // Native-input attach path (LIVE-verified on both tenants): a file on
+      // input.files + a change event flips the dropzone chrome from
+      // "Choose file" to the filename + "Replace file or drag and drop here"
+      // — the exact confirm text ynFileAttachVisibleOk keys on.
+      var fileInput = document.querySelector(
+        'input[type="file"][data-ui="resume"]',
+      );
+      fileInput.addEventListener("change", function () {
+        if (fileInput.files && fileInput.files.length) {
+          window.__attachConfirmed = true;
+          document.getElementById("dz-state").innerHTML =
+            '<span class="dz-filename">' +
+            fileInput.files[0].name +
+            "</span> Replace file or drag and drop here";
+        }
+      });
+    </script>
+  </body>
+</html>

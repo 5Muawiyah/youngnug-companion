@@ -1,0 +1,43 @@
+{
+  "note": "Five constructed ATS posting pages, deliberately WITHOUT a JobPosting ld+json block and without any 'class*=company' text (most bare ATS posting pages never label the employer at all - the board's own branding IS the employer). The fallback table's shape (a hostname -> field-selector table) is an idea taken from two surveyed open-source repos, never copied; the values here lean on the one structural fact every one of these platforms shares - the posting URL's own first path segment is the hiring company's tenant slug - rather than any class name from either repo. Each entry proves the generic guesser (ynGuessJob) misses the employer (no company-shaped text anywhere on the page) while ynAtsPostingJob answers both title and employer from the URL and the page's own h1.",
+  "postings": [
+    {
+      "ats": "greenhouse",
+      "url": "https://job-boards.greenhouse.io/acme-robotics/jobs/4821093",
+      "expectedEmployer": "acme robotics",
+      "expectedTitle": "Graduate Robotics Engineer",
+      "html": "<main><h1>Graduate Robotics Engineer</h1><div class=\"job-post__location\">Cambridge, UK</div><div id=\"content\">Join our robotics team building autonomous warehouse systems.</div></main>"
+    },
+    {
+      "ats": "lever",
+      "url": "https://jobs.lever.co/nova-systems/1a2b3c4d-5e6f-7890-abcd-ef1234567890",
+      "expectedEmployer": "nova systems",
+      "expectedTitle": "Graduate Software Engineer",
+      "html": "<main><div class=\"posting-headline\"><h2>Graduate Software Engineer</h2></div><div class=\"posting-categories\"><div class=\"location\">Bristol, UK</div></div><div class=\"posting-page\"><div class=\"section-wrapper\">Build distributed systems from day one.</div></div></main>"
+    },
+    {
+      "ats": "ashby",
+      "url": "https://jobs.ashbyhq.com/bright-labs/9f8e7d6c-5b4a-3210-fedc-ba9876543210",
+      "expectedEmployer": "bright labs",
+      "expectedTitle": "Graduate Data Scientist",
+      "html": "<main><h1>Graduate Data Scientist</h1><div class=\"posting-location\">Remote, UK</div><div class=\"job-description\">Analyse experiment data across our product suite.</div></main>"
+    },
+    {
+      "ats": "smartrecruiters",
+      "url": "https://careers.smartrecruiters.com/QuantEdge/graduate-data-analyst",
+      "expectedEmployer": "QuantEdge",
+      "expectedTitle": "Graduate Data Analyst",
+      "note": "this ATS renders the posting AND its application form inside the SAME job-sections container - the description read must not pick up the form's own words (a country <select>, an upload button's own label).",
+      "html": "<main><h1>Graduate Data Analyst</h1><div class=\"job-location\">Leeds, UK</div><div class=\"job-sections\">Support quantitative research with clean, reliable data pipelines.<form><label>Country</label><select><option>United Kingdom</option><option>France</option></select><input type=\"text\" placeholder=\"Full name\"><button>Drag and drop or browse</button></form></div></main>",
+      "descriptionMustInclude": "Support quantitative research with clean, reliable data pipelines.",
+      "descriptionMustExclude": ["Drag and drop or browse", "United Kingdom", "Full name"]
+    },
+    {
+      "ats": "workable",
+      "url": "https://apply.workable.com/kestrel-systems/j/ABCDEF1234/",
+      "expectedEmployer": "kestrel systems",
+      "expectedTitle": "Graduate Test Engineer",
+      "html": "<main><h1>Graduate Test Engineer</h1><div class=\"job-location\">Manchester, UK</div><div class=\"job-description\">Own quality across our embedded test rigs.</div></main>"
+    }
+  ]
+}

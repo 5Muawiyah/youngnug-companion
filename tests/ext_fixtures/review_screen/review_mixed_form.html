@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply - Acme Test Co</title>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <!-- Review screen fixture: exactly 3 exact fields (spec autocomplete
+         tokens), 2 guessed fields (label text only, no autocomplete), and
+         one free-text archetype (why_company) that the drafter turns into
+         a draft. Nothing here is a payment/EEO/sensitive field, so every
+         intent this fixture produces is either exact, guessed, or
+         generated_text — the three review-row inputs. -->
+    <form id="acme-apply-form" action="#" onsubmit="return false;">
+      <p>
+        <label for="first_name">First name</label>
+        <input type="text" id="first_name" name="first_name" autocomplete="given-name" />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+      <p>
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" />
+      </p>
+      <p>
+        <label for="city">Town or city</label>
+        <input type="text" id="city" name="city" />
+      </p>
+      <p>
+        <label for="linkedin">LinkedIn profile</label>
+        <input type="text" id="linkedin" name="linkedin" />
+      </p>
+      <p>
+        <label for="why_join">Why do you want to join us?</label><br />
+        <textarea id="why_join" name="why_join" rows="6" cols="40"></textarea>
+      </p>
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      window.__submitted = false;
+      var form = document.getElementById("acme-apply-form");
+      var btn = document.getElementById("submit-btn");
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

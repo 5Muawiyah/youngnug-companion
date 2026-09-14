@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hydration fixture — field re-rendered with a NEW id</title>
+  </head>
+  <body>
+    <h1>Apply</h1>
+    <label for="f_1">First name</label>
+    <input id="f_1" type="text" />
+    <label for="e_1">E-mail</label>
+    <input id="e_1" type="text" />
+    <script>
+      // Simulates a framework re-render 250ms after our write: the input is
+      // REPLACED by a fresh empty node with a DIFFERENT id, so a stored
+      // selector path can never re-find it — only re-discovery can.
+      const orig = document.getElementById("f_1");
+      orig.addEventListener(
+        "input",
+        () => {
+          setTimeout(() => {
+            const fresh = document.createElement("input");
+            fresh.type = "text";
+            fresh.id = "f_2";
+            orig.replaceWith(fresh);
+          }, 250);
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

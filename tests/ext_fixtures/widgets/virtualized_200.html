@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — virtualised list of 200 rows</title>
+  </head>
+  <body>
+    <!-- 200 logical rows, but the popup renders only the ones matching the
+         CURRENTLY TYPED filter (never all 200 at once) — a virtualised
+         list's real behaviour. The driver has to type a filter into the
+         input BEFORE the popup will ever show anything worth matching. -->
+    <label id="row-label">Row</label>
+    <input
+      id="combo"
+      type="text"
+      role="combobox"
+      aria-controls="vlist"
+      aria-labelledby="row-label"
+      autocomplete="off"
+    />
+    <ul id="vlist" role="listbox"></ul>
+
+    <script>
+      (function () {
+        const ROWS = [];
+        for (let i = 0; i < 200; i++) {
+          ROWS.push("Country " + String(i).padStart(3, "0"));
+        }
+        const input = document.getElementById("combo");
+        const list = document.getElementById("vlist");
+        function render() {
+          const q = input.value.trim().toLowerCase();
+          list.innerHTML = "";
+          if (!q) return; // renders NOTHING until filtered — the point of this fixture
+          const matches = ROWS.filter((r) => r.toLowerCase().includes(q)).slice(0, 10);
+          for (const r of matches) {
+            const li = document.createElement("li");
+            li.setAttribute("role", "option");
+            li.textContent = r;
+            list.appendChild(li);
+          }
+        }
+        input.addEventListener("input", render);
+        list.addEventListener("click", (e) => {
+          const li = e.target.closest("[role='option']");
+          if (!li) return;
+          li.setAttribute("aria-selected", "true");
+          input.value = li.textContent;
+        });
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

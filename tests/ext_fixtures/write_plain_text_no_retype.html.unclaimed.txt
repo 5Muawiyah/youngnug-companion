@@ -1,0 +1,6 @@
+fixture: tests\ext_fixtures\write_plain_text_no_retype.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	plain	-	-	yes	no	Reference number plain

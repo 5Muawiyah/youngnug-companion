@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Volunteer with Example Community Trust</title>
+  </head>
+  <body>
+    <!-- Convention 2: fieldset/legend + aria-labelledby, NO autocomplete
+         tokens anywhere, and the two things that must never be filled sitting
+         on the SAME page as fields that must:
+           * a "save your progress" widget with a real password field, in its
+             own <form> - so ynFieldInAnyPasswordScope walls that form and
+             nothing else (the volunteer form beside it still fills);
+           * an "Equal opportunities monitoring" fieldset - ethnicity, gender,
+             disability, sexual orientation, religion - which is never
+             answered and IS reported as a skip.
+         The form's action is deliberately NOT a login action: a password on a
+         login form is a hard stop (ynChallengePage), and this fixture exists
+         to prove the SCOPED refusal, which is the harder case. -->
+    <h1>Volunteer with Example Community Trust</h1>
+
+    <form id="progress" action="/account/save-progress" method="post" onsubmit="return false;">
+      <h2>Save your progress</h2>
+      <p>
+        <label for="acct-email">Account email</label>
+        <input id="acct-email" name="account_email" type="email" />
+      </p>
+      <p>
+        <label for="acct-pass">Choose a password</label>
+        <input id="acct-pass" name="account_password" type="password" />
+      </p>
+    </form>
+
+    <form id="volunteer" action="/volunteer" method="post" onsubmit="return false;">
+      <fieldset>
+        <legend>About you</legend>
+        <p>
+          <span id="lbl-name">Your full name</span>
+          <input aria-labelledby="lbl-name" name="vol_name" type="text" />
+        </p>
+        <p>
+          <span id="lbl-mail">Email we can reach you on</span>
+          <input aria-labelledby="lbl-mail" name="vol_mail" type="email" />
+        </p>
+        <p>
+          <span id="lbl-phone">Contact telephone number</span>
+          <input aria-labelledby="lbl-phone" name="vol_phone" type="tel" />
+        </p>
+        <p>
+          <span id="lbl-addr">First line of your address</span>
+          <input aria-labelledby="lbl-addr" name="vol_addr" type="text" />
+        </p>
+        <p>
+          <span id="lbl-post">Postcode</span>
+          <input aria-labelledby="lbl-post" name="vol_post" type="text" />
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your background</legend>
+        <p>
+          <span id="lbl-school">Most recent school, college or university</span>
+          <input aria-labelledby="lbl-school" name="vol_school" type="text" />
+        </p>
+        <p>
+          <span id="lbl-employer">Most recent employer</span>
+          <input aria-labelledby="lbl-employer" name="vol_employer" type="text" />
+        </p>
+        <p>
+          <span id="lbl-jobtitle">Most recent job title</span>
+          <input aria-labelledby="lbl-jobtitle" name="vol_jobtitle" type="text" />
+        </p>
+        <p>
+          <span id="lbl-li">LinkedIn profile</span>
+          <input aria-labelledby="lbl-li" name="vol_linkedin" type="text" />
+        </p>
+      </fieldset>
+
+      <fieldset id="eeo">
+        <legend>Equal opportunities monitoring</legend>
+        <p>
+          <span id="lbl-eth">What is your ethnic group?</span>
+          <input aria-labelledby="lbl-eth" name="mon_ethnicity" type="text" />
+        </p>
+        <p>
+          <span id="lbl-gender">What is your gender?</span>
+          <input aria-labelledby="lbl-gender" name="mon_gender" type="text" />
+        </p>
+        <p>
+          <span id="lbl-dis">Do you consider yourself to have a disability?</span>
+          <input aria-labelledby="lbl-dis" name="mon_disability" type="text" />
+        </p>
+        <p>
+          <span id="lbl-orient">What is your sexual orientation?</span>
+          <input aria-labelledby="lbl-orient" name="mon_orientation" type="text" />
+        </p>
+        <p>
+          <span id="lbl-rel">What is your religion or belief?</span>
+          <input aria-labelledby="lbl-rel" name="mon_religion" type="text" />
+        </p>
+      </fieldset>
+
+      <p><button id="vol-submit" type="submit">Send my application</button></p>
+    </form>
+    <script>
+      window.__submitted = false;
+      var f = document.getElementById("volunteer");
+      var b = document.getElementById("vol-submit");
+      b.addEventListener("click", function () { window.__submitted = true; });
+      f.addEventListener("submit", function (e) { e.preventDefault(); window.__submitted = true; });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a Languages multi-select checkbox group</title>
+  </head>
+  <body>
+    <fieldset>
+      <legend>Languages</legend>
+      <label><input type="checkbox" id="lang-en" /> English</label>
+      <label><input type="checkbox" id="lang-fr" /> French</label>
+      <label><input type="checkbox" id="lang-de" /> German</label>
+      <label><input type="checkbox" id="lang-ur" /> Urdu</label>
+      <label><input type="checkbox" id="lang-es" /> Spanish</label>
+    </fieldset>
+
+    <script>
+      window.ynTestLanguages = async function (plan) {
+        const boxes = [...document.querySelectorAll('fieldset input[type="checkbox"]')];
+        const r = ynFillCheckboxGroup(boxes, plan.wanted);
+        const tickedLabels = boxes
+          .filter((b) => b.checked)
+          .map((b) => b.closest("label").textContent.trim());
+        return {
+          ok: true,
+          report: { ticked: r.ticked, skipped: r.skipped, tickedLabels },
+        };
+      };
+    </script>
+  </body>
+</html>

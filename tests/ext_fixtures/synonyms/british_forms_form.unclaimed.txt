@@ -1,0 +1,17 @@
+fixture: tests\ext_fixtures\synonyms\british_forms_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 12
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	q3	-	-	yes	no	Christian name q3
+input	text	q4	-	-	yes	no	Sur name q4
+input	text	q7	-	-	yes	no	Landline q7
+input	text	q9	-	-	yes	no	Second line of address q9
+input	text	q10	-	-	yes	no	Flat q10
+input	checkbox	q13	-	-	yes	no	Driver's licence q13
+input	text	q15	-	-	yes	no	Notice period q15
+input	text	q17	-	-	yes	no	Years of experience q17
+input	text	q20	-	-	yes	no	Job title q20
+input	text	d1	-	-	yes	no	Company name d1
+input	text	d2	-	-	yes	no	Emergency contact number d2
+input	text	d3	-	-	yes	no	Username d3

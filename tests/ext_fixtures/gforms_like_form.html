@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Google-Forms-like fixture — ARIA choice widgets with no input elements
+    </title>
+  </head>
+  <body>
+    <h1>Screening questions</h1>
+
+    <!-- GF-style: div role=radio, state ONLY in aria-checked, no inputs -->
+    <div role="listitem">
+      <span id="q1title">Do you have the right to work in the UK?</span>
+      <div role="radiogroup" aria-labelledby="q1title">
+        <div
+          role="radio"
+          id="g_rtw_yes"
+          aria-checked="false"
+          aria-label="Yes"
+          tabindex="0"
+        >
+          <span>Yes</span>
+        </div>
+        <div
+          role="radio"
+          id="g_rtw_no"
+          aria-checked="false"
+          aria-label="No"
+          tabindex="0"
+        >
+          <span>No</span>
+        </div>
+      </div>
+    </div>
+
+    <div role="listitem">
+      <span id="q2title">Notice period</span>
+      <div role="radiogroup" aria-labelledby="q2title">
+        <div
+          role="radio"
+          id="g_np_week"
+          aria-checked="false"
+          aria-label="Less than 1 week"
+          tabindex="0"
+        >
+          <span>Less than 1 week</span>
+        </div>
+        <div
+          role="radio"
+          id="g_np_month"
+          aria-checked="false"
+          aria-label="1 month"
+          tabindex="0"
+        >
+          <span>1 month</span>
+        </div>
+        <div
+          role="radio"
+          id="g_np_three"
+          aria-checked="false"
+          aria-label="3 months"
+          tabindex="0"
+        >
+          <span>3 months</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EEO — must be surfaced, never clicked -->
+    <div role="listitem">
+      <span id="q3title">What is your gender?</span>
+      <div role="radiogroup" aria-labelledby="q3title">
+        <div
+          role="radio"
+          id="g_ee_a"
+          aria-checked="false"
+          aria-label="Woman"
+          tabindex="0"
+        >
+          <span>Woman</span>
+        </div>
+        <div
+          role="radio"
+          id="g_ee_b"
+          aria-checked="false"
+          aria-label="Man"
+          tabindex="0"
+        >
+          <span>Man</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // GF-ish behavior: clicking a radio div checks it and unchecks its
+      // group siblings — state only in aria-checked.
+      for (const r of document.querySelectorAll('[role="radio"]')) {
+        r.addEventListener("click", () => {
+          const group = r.closest('[role="radiogroup"]');
+          for (const sib of group.querySelectorAll('[role="radio"]')) {
+            sib.setAttribute("aria-checked", sib === r ? "true" : "false");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

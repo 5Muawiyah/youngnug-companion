@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a select that silently resets 100ms after change</title>
+  </head>
+  <body>
+    <label for="s">Country</label>
+    <select id="s">
+      <option value="">Choose…</option>
+      <option value="uk">United Kingdom</option>
+      <option value="fr">France</option>
+    </select>
+
+    <script>
+      (function () {
+        const s = document.getElementById("s");
+        s.addEventListener("change", () => {
+          // A real page: some client-side validation the fixture stands in
+          // for decides the value is not allowed and silently resets it.
+          setTimeout(() => {
+            s.selectedIndex = 0;
+          }, 100);
+        });
+      })();
+
+      window.ynTestVerify = async function () {
+        const el = document.getElementById("s");
+        const intents = [
+          {
+            el,
+            kind: "select",
+            value: "United Kingdom",
+            fieldKey: "address.country",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            unresolved: report.unresolved.map((f) => f.fieldKey),
+            reverted: report.reverted,
+            finalValue: el.value,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

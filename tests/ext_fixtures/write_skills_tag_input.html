@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a skills tag input with async suggestions</title>
+  </head>
+  <body>
+    <label id="skills-label">Skills</label>
+    <div id="host" aria-labelledby="skills-label">
+      <input id="skills-input" type="text" />
+      <ul id="suggestions"></ul>
+      <div id="tags"></div>
+    </div>
+
+    <script>
+      (function () {
+        // ATSs offer their OWN taxonomy, not the student's exact spelling —
+        // some skills the profile names are simply absent here, on purpose.
+        const CATALOGUE = [
+          "JavaScript",
+          "Python",
+          "SQL",
+          "Kubernetes",
+          "Machine Learning",
+          "C++",
+          "Docker",
+          "Communication",
+        ];
+        // A real ATS search recognises common tech abbreviations, not just
+        // raw substrings — this is the fixture's own (test-only) stand-in
+        // for that, independent of the production alias table it happens
+        // to overlap with.
+        const SEARCH_EXPAND = {
+          js: "javascript",
+          ts: "typescript",
+          py: "python",
+          k8s: "kubernetes",
+          ml: "machine learning",
+        };
+        const input = document.getElementById("skills-input");
+        const suggestions = document.getElementById("suggestions");
+        const tags = document.getElementById("tags");
+        function render() {
+          const raw = input.value.trim().toLowerCase();
+          suggestions.innerHTML = "";
+          if (!raw) return;
+          const q = SEARCH_EXPAND[raw] || raw;
+          // async: a short delay before the list appears, like a real ATS
+          setTimeout(() => {
+            if (input.value.trim().toLowerCase() !== raw) return; // stale
+            const matches = CATALOGUE.filter((c) => c.toLowerCase().includes(q));
+            suggestions.innerHTML = "";
+            for (const m of matches) {
+              const li = document.createElement("li");
+              li.setAttribute("role", "option");
+              li.textContent = m;
+              suggestions.appendChild(li);
+            }
+          }, 40);
+        }
+        input.addEventListener("input", render);
+        suggestions.addEventListener("click", (e) => {
+          const li = e.target.closest("[role='option']");
+          if (!li) return;
+          const chip = document.createElement("span");
+          chip.className = "tag";
+          chip.textContent = li.textContent;
+          tags.appendChild(chip);
+          input.value = "";
+          suggestions.innerHTML = "";
+        });
+      })();
+
+      window.ynTestSkills = async function (plan) {
+        const host = document.getElementById("host");
+        const r = await ynFillSkills(host, plan.skills);
+        const chips = [...document.querySelectorAll("#tags .tag")].map(
+          (c) => c.textContent,
+        );
+        return { ok: true, report: { filled: r.filled, skipped: r.skipped, chips } };
+      };
+    </script>
+  </body>
+</html>

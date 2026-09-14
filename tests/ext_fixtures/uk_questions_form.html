@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co (UK questions)</title>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <form id="acme-apply-form" action="#" onsubmit="return false;">
+      <p>
+        <label for="first_name">First name</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+
+      <!-- RTW Yes/No — Yes is SECOND (proves boolean radio semantics fix) -->
+      <fieldset>
+        <legend>Are you eligible to work in the UK?</legend>
+        <label
+          ><input type="radio" id="rtw_no" name="rtw" value="no" /> No</label
+        >
+        <label
+          ><input type="radio" id="rtw_yes" name="rtw" value="yes" /> Yes</label
+        >
+      </fieldset>
+
+      <p>
+        <label for="visa_sponsor">Will you need visa sponsorship?</label>
+        <select id="visa_sponsor" name="visa_sponsor">
+          <option value="">—</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="notice_period">Notice period</label>
+        <select id="notice_period" name="notice_period">
+          <option value="">—</option>
+          <option value="1 week">1 week</option>
+          <option value="1 month">1 month</option>
+          <option value="3 months">3 months</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="salary">Salary expectation</label>
+        <input type="text" id="salary" name="salary" />
+      </p>
+
+      <fieldset>
+        <legend>Are you willing to relocate?</legend>
+        <label
+          ><input
+            type="radio"
+            id="reloc_yes"
+            name="relocate"
+            value="yes"
+          />
+          Yes</label
+        >
+        <label
+          ><input type="radio" id="reloc_no" name="relocate" value="no" />
+          No</label
+        >
+      </fieldset>
+
+      <p>
+        <label
+          ><input
+            type="checkbox"
+            id="driving_licence"
+            name="driving_licence"
+          />
+          I hold a full UK driving licence</label
+        >
+      </p>
+
+      <p>
+        <label for="earliest_start">Earliest available start date</label>
+        <input type="text" id="earliest_start" name="earliest_start" />
+      </p>
+
+      <p>
+        <label for="years_exp">Years of experience</label>
+        <input type="number" id="years_exp" name="years_exp" min="0" />
+      </p>
+
+      <p>
+        <label for="highest_qual">Highest level of qualification</label>
+        <select id="highest_qual" name="highest_qual">
+          <option value="">—</option>
+          <option value="GCSEs">GCSEs</option>
+          <option value="A-levels">A-levels</option>
+          <option value="BSc Computer Science (in progress)">
+            BSc Computer Science (in progress)
+          </option>
+          <option value="Masters">Masters</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="why_company">Why do you want to work at Acme?</label><br />
+        <textarea
+          id="why_company"
+          name="why_company"
+          rows="5"
+          cols="40"
+          maxlength="300"
+        ></textarea>
+      </p>
+
+      <!-- Sensitive — must never be auto-filled -->
+      <fieldset>
+        <legend>Do you have any unspent criminal convictions?</legend>
+        <label
+          ><input
+            type="radio"
+            id="criminal_yes"
+            name="criminal"
+            value="yes"
+          />
+          Yes</label
+        >
+        <label
+          ><input type="radio" id="criminal_no" name="criminal" value="no" />
+          No</label
+        >
+      </fieldset>
+
+      <!-- EEO — skip:"eeo" path -->
+      <fieldset id="eeo-section">
+        <legend>Equal Opportunity Monitoring</legend>
+        <p>
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender">
+            <option value="">Prefer not to say</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="nonbinary">Non-binary</option>
+          </select>
+        </p>
+      </fieldset>
+
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      // never-submit sweep: any accidental activation of the submit control
+      // (click OR a real form submit) is recorded here, and prevented so the
+      // page never navigates away mid-test.
+      window.__submitted = false;
+      var form = document.getElementById("acme-apply-form");
+      var btn = document.getElementById("submit-btn");
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

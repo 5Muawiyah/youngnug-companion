@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Naked password body siblings — tier-3 neighbourhood wall</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 480px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        max-width: 360px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Judge residual (tier-3 neighbourhood): form-less, container-less,
+      heading-less signup with password + account email + name as DIRECT
+      children of <body>. Scope of the naked password is the password node
+      itself (no content wrapper), so contains() never covers siblings.
+      Tier-3+sibling neighbourhood must wall body-sibling email AND name;
+      password stays empty. No <form>, no auth id/class, no Create Account
+      heading/button.
+    -->
+    <label for="body_email">Email</label>
+    <input
+      id="body_email"
+      type="email"
+      name="email"
+      autocomplete="email"
+      value=""
+    />
+    <label for="body_name">Full name</label>
+    <input
+      id="body_name"
+      type="text"
+      name="full_name"
+      autocomplete="name"
+      value=""
+    />
+    <label for="body_pw">Password</label>
+    <input
+      id="body_pw"
+      type="password"
+      name="password"
+      autocomplete="new-password"
+      value=""
+    />
+    <script>
+      window.__submitted = false;
+    </script>
+  </body>
+</html>

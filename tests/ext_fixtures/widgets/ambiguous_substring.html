@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — two options share one substring, refused</title>
+  </head>
+  <body>
+    <!-- The seventh fixture: "London" is a substring of BOTH options and an
+         exact match of NEITHER, so the exact-then-unique-substring rule
+         must refuse rather than guess. The control has no nested input, so
+         nothing is ever typed anywhere either — a genuine zero writes. -->
+    <div
+      id="combo"
+      role="combobox"
+      aria-haspopup="listbox"
+      aria-expanded="false"
+      tabindex="0"
+    >
+      Choose an office
+    </div>
+
+    <script>
+      (function () {
+        const control = document.getElementById("combo");
+        const offices = ["Old London Office", "New London Branch"];
+        let portal = null;
+        function open() {
+          if (portal) return;
+          portal = document.createElement("ul");
+          portal.setAttribute("role", "listbox");
+          for (const o of offices) {
+            const li = document.createElement("li");
+            li.setAttribute("role", "option");
+            li.textContent = o;
+            portal.appendChild(li);
+          }
+          document.body.appendChild(portal);
+          control.setAttribute("aria-expanded", "true");
+          portal.addEventListener("click", (e) => {
+            const li = e.target.closest("[role='option']");
+            if (!li) return;
+            li.setAttribute("aria-selected", "true");
+            control.textContent = li.textContent;
+          });
+        }
+        control.addEventListener("pointerdown", open);
+        control.addEventListener("mousedown", open);
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+            anySelected: !!document.querySelector('[aria-selected="true"]'),
+            controlText: control_text(),
+          },
+        };
+        function control_text() {
+          const c = document.getElementById("combo");
+          return c ? c.textContent.trim() : null;
+        }
+      };
+    </script>
+  </body>
+</html>

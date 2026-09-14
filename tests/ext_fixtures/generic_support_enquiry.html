@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Contact us — Example Housing Advice Line</title>
+  </head>
+  <body>
+    <!-- Convention 3: the old-web shape. A layout <table>, no <label for>
+         anywhere, no autocomplete, no aria - the only honest signals are the
+         preceding <td> text and the placeholders. This is the rung that used
+         to be a silent nothing on an unrecognised site: the nearby-text
+         failsafe. Everything it maps here is amber by construction, and the
+         two fields it has no honest answer for (enquiry text, reference
+         number) must come back UNFILLED rather than guessed. -->
+    <h1>Contact the Example Housing Advice Line</h1>
+    <form id="enquiry" action="/enquiry" method="post" onsubmit="return false;">
+      <table>
+        <tr>
+          <td>Your name</td>
+          <td><input name="f1" type="text" placeholder="Name" /></td>
+        </tr>
+        <tr>
+          <td>Email address</td>
+          <td><input name="f2" type="text" placeholder="you@example.com" /></td>
+        </tr>
+        <tr>
+          <td>Daytime phone</td>
+          <td><input name="f3" type="text" placeholder="Phone" /></td>
+        </tr>
+        <tr>
+          <td>Postcode</td>
+          <td><input name="f4" type="text" placeholder="Postcode" /></td>
+        </tr>
+        <tr>
+          <td>Existing reference number</td>
+          <td><input name="f5" type="text" placeholder="If you have one" /></td>
+        </tr>
+        <tr>
+          <td>How can we help?</td>
+          <td><textarea name="f6" rows="5" cols="40"></textarea></td>
+        </tr>
+      </table>
+      <p><button id="enq-submit" type="submit">Send enquiry</button></p>
+    </form>
+    <script>
+      window.__submitted = false;
+      var f = document.getElementById("enquiry");
+      var b = document.getElementById("enq-submit");
+      b.addEventListener("click", function () { window.__submitted = true; });
+      f.addEventListener("submit", function (e) { e.preventDefault(); window.__submitted = true; });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+fixture: tests\ext_fixtures\widgets\virtualized_200.html
+detected ats: unknown (unknown)
+unclaimed controls: 2
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	combo	-	-	yes	no	Row combo off
+ul	-	vlist	-	-	yes	no	vlist

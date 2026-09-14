@@ -1,0 +1,10 @@
+fixture: tests/ext_fixtures/adapters/greenhouse_education_fields.html
+detected ats: greenhouse (dom)
+unclaimed controls: 5
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	start-month	-	-	yes	no	start-month
+input	text	start-year	-	-	yes	no	start-year
+input	text	end-month	-	-	yes	no	end-month
+input	text	end-year	-	-	yes	no	end-year
+input	file	resume	job_application[resume]	-	yes	no	job_application[resume] resume

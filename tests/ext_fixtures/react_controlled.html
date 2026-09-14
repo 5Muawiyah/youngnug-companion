@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co (React)</title>
+    <script src="vendor/react.production.min.js"></script>
+    <script src="vendor/react-dom.production.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // A REAL React 18 controlled form (not a plain DOM stand-in). Every field's
+      // value comes from useState and is only what onChange put there — a native
+      // `el.value = x` write with no event would be silently reverted by React on
+      // the next render, and a fill that only LOOKS right in the DOM but never
+      // touched state would still show the OLD state here. Each field has a
+      // visible "React ... state:" mirror driven by the same state variable the
+      // input's `value` prop reads, so a passing assertion on the mirror text
+      // proves the write went through React, not around it.
+      const e = React.createElement;
+      const COUNTRIES = [
+        "United Kingdom",
+        "United States",
+        "Ireland",
+        "France",
+        "Germany",
+      ];
+
+      function App() {
+        const [firstName, setFirstName] = React.useState("");
+        const [lastName, setLastName] = React.useState("");
+        const [email, setEmail] = React.useState("");
+        const [phone, setPhone] = React.useState("");
+        // countryQuery is the raw text in the box; selectedCountry is the TRUE
+        // selection and is cleared the moment the user types again. A filler that
+        // merely writes text into the input (the false positive this catches)
+        // would leave selectedCountry empty forever — only a real click on a
+        // role="option" row sets it, which is exactly what the test checks.
+        const [countryQuery, setCountryQuery] = React.useState("");
+        const [selectedCountry, setSelectedCountry] = React.useState("");
+        const [needsSponsorship, setNeedsSponsorship] = React.useState(false);
+
+        const filtered = countryQuery
+          ? COUNTRIES.filter((c) =>
+              c.toLowerCase().includes(countryQuery.toLowerCase()),
+            )
+          : [];
+
+        function pickCountry(c) {
+          setSelectedCountry(c);
+          setCountryQuery(c);
+        }
+
+        return e(
+          "form",
+          {
+            id: "acme-apply-form",
+            onSubmit: (ev) => {
+              ev.preventDefault();
+              window.__submitted = true;
+            },
+          },
+          e("h1", null, "Apply to Acme Test Co (React)"),
+
+          e(
+            "p",
+            null,
+            e("label", { htmlFor: "first_name" }, "First name"),
+            e("input", {
+              type: "text",
+              id: "first_name",
+              name: "first_name",
+              value: firstName,
+              onChange: (ev) => setFirstName(ev.target.value),
+            }),
+          ),
+          e(
+            "div",
+            { "data-testid": "state-first_name" },
+            "React first_name state: " + (firstName || "(empty)"),
+          ),
+
+          e(
+            "p",
+            null,
+            e("label", { htmlFor: "last_name" }, "Last name"),
+            e("input", {
+              type: "text",
+              id: "last_name",
+              name: "last_name",
+              value: lastName,
+              onChange: (ev) => setLastName(ev.target.value),
+            }),
+          ),
+          e(
+            "div",
+            { "data-testid": "state-last_name" },
+            "React last_name state: " + (lastName || "(empty)"),
+          ),
+
+          e(
+            "p",
+            null,
+            e("label", { htmlFor: "email" }, "Email"),
+            e("input", {
+              type: "email",
+              id: "email",
+              name: "email",
+              value: email,
+              onChange: (ev) => setEmail(ev.target.value),
+            }),
+          ),
+          e(
+            "div",
+            { "data-testid": "state-email" },
+            "React email state: " + (email || "(empty)"),
+          ),
+
+          e(
+            "p",
+            null,
+            e("label", { htmlFor: "phone" }, "Phone"),
+            e("input", {
+              type: "tel",
+              id: "phone",
+              name: "phone",
+              value: phone,
+              onChange: (ev) => setPhone(ev.target.value),
+            }),
+          ),
+          e(
+            "div",
+            { "data-testid": "state-phone" },
+            "React phone state: " + (phone || "(empty)"),
+          ),
+
+          e(
+            "p",
+            null,
+            e("label", { htmlFor: "country" }, "Country"),
+            e("input", {
+              type: "text",
+              id: "country",
+              name: "country",
+              role: "combobox",
+              "aria-autocomplete": "list",
+              "aria-expanded": filtered.length > 0,
+              autoComplete: "off",
+              value: countryQuery,
+              onChange: (ev) => {
+                setCountryQuery(ev.target.value);
+                setSelectedCountry("");
+              },
+            }),
+            filtered.length > 0
+              ? e(
+                  "ul",
+                  { role: "listbox" },
+                  filtered.map((c) =>
+                    e(
+                      "li",
+                      {
+                        key: c,
+                        role: "option",
+                        "data-value": c,
+                        "aria-selected":
+                          selectedCountry === c ? "true" : "false",
+                        onClick: () => pickCountry(c),
+                      },
+                      c,
+                    ),
+                  ),
+                )
+              : null,
+          ),
+          e(
+            "div",
+            { "data-testid": "state-country" },
+            "React selectedCountry state: " + (selectedCountry || "(none)"),
+          ),
+
+          e(
+            "p",
+            null,
+            e(
+              "label",
+              { htmlFor: "sponsorship" },
+              e("input", {
+                type: "checkbox",
+                id: "sponsorship",
+                name: "sponsorship",
+                checked: needsSponsorship,
+                onChange: (ev) => setNeedsSponsorship(ev.target.checked),
+              }),
+              " Do you require visa sponsorship?",
+            ),
+          ),
+          e(
+            "div",
+            { "data-testid": "state-sponsorship" },
+            "React needsSponsorship state: " + String(needsSponsorship),
+          ),
+
+          e(
+            "button",
+            { type: "submit", id: "submit-btn" },
+            "Submit application",
+          ),
+        );
+      }
+
+      window.__submitted = false;
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(e(App));
+    </script>
+  </body>
+</html>

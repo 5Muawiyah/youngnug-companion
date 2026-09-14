@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Password wrapper sibling email — tier-3 neighbourhood wall</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 480px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        max-width: 360px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+      #pwbox {
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Judge residual (tier-3 neighbourhood): form-less, container-less,
+      heading-less markup where the password lives inside a generic wrapper
+      and the account email is a SIBLING of that wrapper (not a descendant).
+      Tier-3 scope = #pwbox; contains() does not cover the sibling email.
+      Neighbourhood (scope's direct siblings) must wall wrap_email.
+      No <form>, no login/signup/account id or class, no Create Account
+      heading/button.
+    -->
+    <div id="pwbox">
+      <label for="wrap_pw">Password</label>
+      <input
+        id="wrap_pw"
+        type="password"
+        name="password"
+        autocomplete="new-password"
+        value=""
+      />
+    </div>
+    <label for="wrap_email">Email</label>
+    <input
+      id="wrap_email"
+      type="email"
+      name="email"
+      autocomplete="email"
+      value=""
+    />
+    <script>
+      window.__submitted = false;
+    </script>
+  </body>
+</html>

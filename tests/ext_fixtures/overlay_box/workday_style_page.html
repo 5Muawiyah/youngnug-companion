@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Workday-style apply page (representative fixture)</title>
+<style>
+  html, body { margin:0; font-family: "Helvetica Neue", Arial, sans-serif; background:#f7f8fa; color:#333; }
+  .wd-header { background:#0875e1; color:#fff; padding:14px 32px; font-size:16px; }
+  .wd-steps { display:flex; gap:8px; padding:16px 32px; background:#fff; border-bottom:1px solid #e1e4e8; font-size:13px; color:#666; }
+  .wd-steps .active { color:#0875e1; font-weight:600; }
+  .wd-panel { max-width:700px; margin:24px auto; background:#fff; border:1px solid #e1e4e8; border-radius:6px; padding:24px 32px; }
+  .wd-field { margin-bottom:16px; }
+  .wd-field label { display:block; font-size:13px; color:#555; margin-bottom:6px; }
+  .wd-field input, .wd-field select { width:100%; padding:8px 10px; border:1px solid #c4c9cf; border-radius:4px; box-sizing:border-box; }
+  .wd-next { position:fixed; bottom:0; left:0; right:0; background:#fff; border-top:1px solid #e1e4e8; padding:14px 32px; text-align:right; }
+  .wd-next button { background:#0875e1; color:#fff; border:0; padding:10px 26px; border-radius:4px; font-size:14px; }
+</style>
+</head>
+<body>
+  <div class="wd-header">Workday &mdash; My Information</div>
+  <div class="wd-steps"><span class="active">1. My Information</span><span>2. My Experience</span><span>3. Review</span></div>
+  <div class="wd-panel">
+    <div class="wd-field"><label for="legal-first">Legal First Name</label><input id="legal-first" name="legalName--firstName"></div>
+    <div class="wd-field"><label for="legal-last">Legal Last Name</label><input id="legal-last" name="legalName--lastName"></div>
+    <div class="wd-field"><label for="wd-email">Email Address</label><input id="wd-email" name="email"></div>
+    <div class="wd-field"><label for="wd-phone">Phone Number</label><input id="wd-phone" name="phoneNumber"></div>
+  </div>
+  <div class="wd-next"><button type="button">Save and Continue</button></div>
+</body>
+</html>

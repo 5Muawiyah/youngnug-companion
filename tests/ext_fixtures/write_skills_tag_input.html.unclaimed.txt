@@ -1,0 +1,6 @@
+fixture: tests\ext_fixtures\write_skills_tag_input.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	skills-input	-	-	yes	no	skills-input

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co</title>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <form id="acme-apply-form" action="#" onsubmit="return false;">
+      <p>
+        <label for="first_name">First name</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+
+      <fieldset id="eeo-section">
+        <legend>Equal Opportunity Monitoring</legend>
+        <p>
+          We ask the following so we can monitor our progress towards being an
+          inclusive employer. Answering is entirely optional and never affects
+          your application.
+        </p>
+        <p>
+          <label for="gender">Gender</label>
+          <select id="gender" name="gender">
+            <option value="">Prefer not to say</option>
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="nonbinary">Non-binary</option>
+          </select>
+        </p>
+        <p>
+          <label for="ethnicity">Ethnicity</label>
+          <select id="ethnicity" name="ethnicity">
+            <option value="">Prefer not to say</option>
+            <option value="asian">Asian</option>
+            <option value="black">Black</option>
+            <option value="mixed">Mixed</option>
+            <option value="white">White</option>
+            <option value="other">Other</option>
+          </select>
+        </p>
+      </fieldset>
+
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      window.__submitted = false;
+      var form = document.getElementById("acme-apply-form");
+      var btn = document.getElementById("submit-btn");
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

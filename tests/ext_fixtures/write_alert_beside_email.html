@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a role=alert stays up beside a filled email field</title>
+  </head>
+  <body>
+    <form id="f">
+      <label for="email">Email</label>
+      <input id="email" type="email" />
+      <div role="alert">This field is required and must be a valid email</div>
+    </form>
+
+    <script>
+      window.ynTestVerify = async function () {
+        const el = document.getElementById("email");
+        const intents = [
+          {
+            el,
+            kind: "text",
+            value: "student@example.com",
+            fieldKey: "contact.email",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            errors: report.errors,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

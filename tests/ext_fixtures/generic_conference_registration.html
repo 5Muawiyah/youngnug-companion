@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Register — Example Student Careers Fair</title>
+  </head>
+  <body>
+    <!-- Convention 1: a plain, standards-clean form. Every control has a
+         <label for>, and the identity fields carry the SPEC autocomplete
+         tokens. This is the case the generic filler must get exactly right
+         with zero guessing: autocomplete is unambiguous, so every one of
+         these must come back "exact", not amber. It is NOT a job advert and
+         NOT an ATS - the point is that the Companion no longer needs the
+         page to be a job it has already Approved. -->
+    <h1>Register for the Example Student Careers Fair</h1>
+    <form id="registration" action="/register" method="post" onsubmit="return false;">
+      <p>
+        <label for="reg-first">First name</label>
+        <input id="reg-first" name="first" type="text" autocomplete="given-name" />
+      </p>
+      <p>
+        <label for="reg-last">Last name</label>
+        <input id="reg-last" name="last" type="text" autocomplete="family-name" />
+      </p>
+      <p>
+        <label for="reg-email">Email address</label>
+        <input id="reg-email" name="email" type="email" autocomplete="email" />
+      </p>
+      <p>
+        <label for="reg-tel">Mobile number</label>
+        <input id="reg-tel" name="tel" type="tel" autocomplete="tel" />
+      </p>
+      <p>
+        <label for="reg-street">Street address</label>
+        <input id="reg-street" name="street" type="text" autocomplete="street-address" />
+      </p>
+      <p>
+        <label for="reg-town">Town or city</label>
+        <input id="reg-town" name="town" type="text" autocomplete="address-level2" />
+      </p>
+      <p>
+        <label for="reg-postcode">Postcode</label>
+        <input id="reg-postcode" name="postcode" type="text" autocomplete="postal-code" />
+      </p>
+      <p>
+        <label for="reg-site">Personal website</label>
+        <input id="reg-site" name="site" type="url" autocomplete="url" />
+      </p>
+      <p>
+        <label for="reg-diet">Dietary requirements</label>
+        <input id="reg-diet" name="diet" type="text" />
+      </p>
+      <p>
+        <label for="reg-hear">How did you hear about us?</label>
+        <input id="reg-hear" name="hear" type="text" />
+      </p>
+      <p>
+        <label><input id="reg-terms" name="terms" type="checkbox" /> I agree to the event terms and conditions</label>
+      </p>
+      <p><button id="reg-submit" type="submit">Complete registration</button></p>
+    </form>
+    <script>
+      // never-submit sweep: any activation of the terminal control is
+      // recorded and prevented, so the harness can assert on it.
+      window.__submitted = false;
+      var f = document.getElementById("registration");
+      var b = document.getElementById("reg-submit");
+      b.addEventListener("click", function () { window.__submitted = true; });
+      f.addEventListener("submit", function (e) { e.preventDefault(); window.__submitted = true; });
+    </script>
+  </body>
+</html>

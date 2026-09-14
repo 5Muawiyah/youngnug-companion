@@ -1,0 +1,6 @@
+fixture: tests\ext_fixtures\write_masked_keystroke_input.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	masked	-	-	yes	no	Reference number masked

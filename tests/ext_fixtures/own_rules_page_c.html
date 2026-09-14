@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><title>Apply — Own Rules Page C</title></head>
+  <body>
+    <h1>Apply to Page C Co</h1>
+    <form id="app-form" action="#" onsubmit="return false;">
+      <p><label for="home-town">Where do you live day to day?</label>
+        <input type="text" id="home-town" name="home_town" /></p>
+      <p><label for="li-url">Your professional profile link</label>
+        <input type="url" id="li-url" name="li_url" /></p>
+      <p><button type="submit" id="submit-btn">Submit application</button></p>
+    </form>
+    <!-- The deliberate safety case, in its OWN separate widget (a real
+         "create an account to track this application" box bolted on
+         beside the form, not inside it — putting it in the SAME <form>
+         as the fields above would scope the password guard to the whole
+         form and swallow every field in it, which is not what this
+         plant is testing). An own rule can be written to point a label
+         straight at a password field; it must never be filled, whatever
+         the rule says — the write-time guard checks the LIVE element,
+         not the rule's intent. -->
+    <div id="account-widget">
+      <label for="account-password">Create a password to track your application</label>
+      <input type="password" id="account-password" name="account_password" />
+    </div>
+    <!-- Second deliberate safety case: a real "Equal opportunities monitoring"
+         section, the same heading shape ynInEeoSection's own EEO-heading
+         regex matches. An own rule can be written to point a label
+         straight at a field inside it; it must never be filled, whatever
+         the rule says — the write-time guard reads the LIVE element's own
+         ancestor section, not the rule's intent, the same way it reads
+         the password field above by the element rather than the rule. -->
+    <section>
+      <h2>Equal opportunities monitoring</h2>
+      <p><label for="ethnic-group">What is your ethnic group?</label>
+        <input type="text" id="ethnic-group" name="ethnic_group" /></p>
+    </section>
+    <!-- Third deliberate safety case: a genuine <label for> pointing at a
+         SUBMIT control, styled and labelled exactly like an ordinary
+         field so an own rule's label match can find it. An own rule
+         mapping this label to a profile key must never write to it,
+         whatever value the rule names — the write-time guard refuses by
+         the element's own type, not by what a rule intended it for. -->
+    <p><label for="send-btn">Send this application now</label>
+      <input type="submit" id="send-btn" value="Send" /></p>
+  </body>
+</html>

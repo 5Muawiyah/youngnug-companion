@@ -1,0 +1,9 @@
+fixture: tests\ext_fixtures\guards\guard_classes_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 4
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	checkbox	privacy	privacy_agree	-	yes	no	I agree to the privacy policy privacy_agree privacy
+input	checkbox	subscribe1	subscribe_alerts	-	yes	no	Subscribe to job alerts subscribe_alerts subscribe1
+input	checkbox	subscribe2	newsletter	-	yes	no	Sign up for our marketing newsletter newsletter subscribe2
+input	checkbox	subscribe3	sms_opt_in	-	yes	no	I consent to receive SMS updates sms_opt_in subscribe3

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Member Sign Up — split form password outside email form</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 480px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      .login-widget {
+        border: 1px solid #ccc;
+        padding: 16px;
+        border-radius: 6px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        max-width: 360px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      BUG B (SAFETY slip-through) repro — signup widget with email INSIDE a
+      <form> and password as a SIBLING OUTSIDE that form (same auth widget).
+      Field-anchored walls checked only the email's form (no password there)
+      and filled real PII into the account-creation email. Password-anchored:
+      password has no form → scope = .login-widget#signup-widget → email is a
+      descendant → MUST stay EMPTY. No page-level Create Account heading that
+      alone would zero the page (heading is "Member Sign Up").
+    -->
+    <div class="login-widget" id="signup-widget">
+      <h2>Member Sign Up</h2>
+      <p>Create credentials to track your application.</p>
+      <form id="email-only-form" action="#" onsubmit="return false;">
+        <p>
+          <label for="new_email">Email</label>
+          <input
+            type="email"
+            id="new_email"
+            name="email"
+            autocomplete="email"
+            value=""
+          />
+        </p>
+        <p>
+          <button type="submit" id="signup-continue">Continue</button>
+        </p>
+      </form>
+      <p>
+        <label for="new_password">Password</label>
+        <input
+          type="password"
+          id="new_password"
+          name="password"
+          autocomplete="new-password"
+          value=""
+        />
+      </p>
+    </div>
+    <script>
+      window.__submitted = false;
+      var form = document.getElementById("email-only-form");
+      var btn = document.getElementById("signup-continue");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

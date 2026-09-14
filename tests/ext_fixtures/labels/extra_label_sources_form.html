@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Custom-widget application</title></head>
+<body>
+  <!-- one field per new label source, each with NO other
+       signal that could resolve it on its own — the mapping only works if
+       that one new rung fires. -->
+  <form id="app">
+    <!-- (a) aria-describedby only -->
+    <input id="f-a" name="a1" type="text" aria-describedby="desc-a" />
+    <span id="desc-a" hidden>Email address</span>
+
+    <!-- (b) id-naming convention, no for= -->
+    <label id="crc-label-fname">First name</label>
+    <input id="fname" type="text" />
+
+    <!-- (c) a "…label…"-named attribute on a bounded ancestor -->
+    <div data-label="Postcode">
+      <input id="f-c" name="c1" type="text" />
+    </div>
+
+    <!-- (d) shadow-host attribute fallback: the host carries the real
+         label; the inner input (built by the script below) has none. -->
+    <my-widget id="host-d" label="Last name"></my-widget>
+
+    <!-- (e) data-testid as generic identity -->
+    <input id="f-e" name="e1" type="text" data-testid="phone-number" />
+
+    <!-- (f) DECOY — a data-testid that must NOT map to first name -->
+    <input id="f-decoy" name="x1" type="text" data-testid="company-name" />
+  </form>
+  <script>
+    (function () {
+      var host = document.getElementById("host-d");
+      var root = host.attachShadow({ mode: "open" });
+      var input = document.createElement("input");
+      input.id = "f-d";
+      input.type = "text";
+      root.appendChild(input);
+    })();
+  </script>
+</body>
+</html>

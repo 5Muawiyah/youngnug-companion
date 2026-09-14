@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — widget that only listens on mousedown, never click</title>
+  </head>
+  <body>
+    <!-- A real widget class: it opens AND selects on 'mousedown' only. A
+         bare el.click() (which fires only a 'click' event) would never
+         reach this — the driver's full pointer sequence has to include a
+         real mousedown for both the open gesture and the option pick. -->
+    <div
+      id="combo"
+      role="combobox"
+      aria-haspopup="listbox"
+      aria-controls="md-listbox"
+      aria-expanded="false"
+      tabindex="0"
+    >
+      Choose a country
+    </div>
+    <ul id="md-listbox" role="listbox" hidden></ul>
+
+    <script>
+      (function () {
+        const control = document.getElementById("combo");
+        const list = document.getElementById("md-listbox");
+        const countries = ["Canada", "United States", "United Kingdom", "Australia"];
+        control.addEventListener("mousedown", () => {
+          list.hidden = false;
+          control.setAttribute("aria-expanded", "true");
+          list.innerHTML = "";
+          for (const c of countries) {
+            const li = document.createElement("li");
+            li.setAttribute("role", "option");
+            li.textContent = c;
+            list.appendChild(li);
+          }
+        });
+        // Deliberately no 'click' listener anywhere in this widget.
+        list.addEventListener("mousedown", (e) => {
+          const li = e.target.closest("[role='option']");
+          if (!li) return;
+          li.setAttribute("aria-selected", "true");
+          control.textContent = li.textContent;
+          list.hidden = true;
+          control.setAttribute("aria-expanded", "false");
+        });
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

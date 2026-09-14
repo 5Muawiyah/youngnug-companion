@@ -1,0 +1,6 @@
+fixture: tests\ext_fixtures\labels\extra_label_sources_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	f-decoy	x1	company-name	yes	no	x1 f-decoy company-name

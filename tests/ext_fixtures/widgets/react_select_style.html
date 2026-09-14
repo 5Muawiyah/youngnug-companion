@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — react-select-style combobox</title>
+  </head>
+  <body>
+    <!-- The control IS the input (role=combobox lives on the <input>
+         itself, not a wrapper) — the common react-select shape. Options
+         filter to those whose text includes the typed value, as a real
+         typeahead does. Opens on focus/pointerdown; closes on selection. -->
+    <label id="country-label">Country</label>
+    <input
+      id="combo"
+      type="text"
+      role="combobox"
+      aria-controls="combo-listbox"
+      aria-expanded="false"
+      aria-labelledby="country-label"
+      autocomplete="off"
+    />
+    <ul id="combo-listbox" role="listbox" hidden>
+      <li role="option" data-value="ca">Canada</li>
+      <li role="option" data-value="us">United States</li>
+      <li role="option" data-value="uk">United Kingdom</li>
+      <li role="option" data-value="au">Australia</li>
+    </ul>
+
+    <script>
+      (function () {
+        const input = document.getElementById("combo");
+        const listbox = document.getElementById("combo-listbox");
+        function render() {
+          const q = input.value.trim().toLowerCase();
+          for (const li of listbox.querySelectorAll("li")) {
+            li.hidden = q !== "" && !li.textContent.toLowerCase().includes(q);
+          }
+        }
+        function open() {
+          listbox.hidden = false;
+          input.setAttribute("aria-expanded", "true");
+          render();
+        }
+        input.addEventListener("pointerdown", open);
+        input.addEventListener("focus", open);
+        input.addEventListener("input", () => {
+          open();
+        });
+        listbox.addEventListener("click", (e) => {
+          const li = e.target.closest("[role='option']");
+          if (!li) return;
+          li.setAttribute("aria-selected", "true");
+          input.value = li.textContent.trim();
+          listbox.hidden = true;
+          input.setAttribute("aria-expanded", "false");
+        });
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

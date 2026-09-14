@@ -1,0 +1,5 @@
+fixture: tests\ext_fixtures\rows\wizard_step2_email_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 0
+
+tag	type	id	name	automation-id	visible	disabled	label

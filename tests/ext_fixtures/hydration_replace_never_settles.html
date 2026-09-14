@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Node-Replacement NEVER Settles (negative fixture)</title>
+  </head>
+  <body>
+    <h1>Apply (unbounded node-replacement)</h1>
+    <!--
+      Negative fixture: same node-replacement mechanism as
+      hydration_replace_form.html, but replacements NEVER stop.
+
+      A correct ynSettleWrite must NOT claim held: at totalMs and/or
+      maxRewrites it disconnects and marks the fought fields `reverted`
+      (amber) — never a false "filled".
+    -->
+    <div id="job-application-form">
+      <form id="apply-form" action="#" onsubmit="return false;">
+        <p>
+          <label for="candidate_first_name">First name</label>
+          <input
+            type="text"
+            id="candidate_first_name"
+            name="candidate[first_name]"
+          />
+        </p>
+        <p>
+          <label for="candidate_email">Email</label>
+          <input type="email" id="candidate_email" name="candidate[email]" />
+        </p>
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      window.__ynReplaceCount = 0;
+      window.__ynNeverSettles = true;
+
+      function replaceNode(id, name, type) {
+        const old = document.getElementById(id);
+        if (!old || !old.parentNode) return;
+        const neu = document.createElement("input");
+        neu.type = type || "text";
+        neu.id = id;
+        neu.name = name;
+        old.parentNode.replaceChild(neu, old);
+      }
+
+      function replaceIdentityFields() {
+        window.__ynReplaceCount += 1;
+        replaceNode("candidate_first_name", "candidate[first_name]", "text");
+        replaceNode("candidate_email", "candidate[email]", "email");
+      }
+
+      // Unbounded: keep replacing every 250ms forever (or until the harness
+      // tears the document down after ynSettleWrite returns).
+      window.__ynReplaceInterval = setInterval(replaceIdentityFields, 250);
+      // First replacement soon so the fight starts before quietMs.
+      setTimeout(replaceIdentityFields, 80);
+    </script>
+  </body>
+</html>

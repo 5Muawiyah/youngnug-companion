@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — portalled listbox, no aria-controls/owns</title>
+  </head>
+  <body>
+    <!-- No aria-controls / aria-owns at all: the popup this control opens
+         has to be found by DIFFING the set of open listboxes before and
+         after the gesture. It is portalled to the very end of <body>, well
+         outside this control's own subtree, as a real portal-rendered
+         popup (Radix/Headless UI style) would be. -->
+    <div id="wrap">
+      <div
+        id="combo"
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        tabindex="0"
+      >
+        Choose a country
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const control = document.getElementById("combo");
+        const countries = ["Canada", "United States", "United Kingdom", "Australia"];
+        let portal = null;
+        function openPortal() {
+          if (portal) return;
+          portal = document.createElement("ul");
+          portal.id = "portal-listbox";
+          portal.setAttribute("role", "listbox");
+          for (const c of countries) {
+            const li = document.createElement("li");
+            li.setAttribute("role", "option");
+            li.textContent = c;
+            portal.appendChild(li);
+          }
+          document.body.appendChild(portal); // appended at the very end
+          control.setAttribute("aria-expanded", "true");
+          portal.addEventListener("click", (e) => {
+            const li = e.target.closest("[role='option']");
+            if (!li) return;
+            li.setAttribute("aria-selected", "true");
+            control.textContent = li.textContent;
+            portal.remove();
+            portal = null;
+            control.setAttribute("aria-expanded", "false");
+          });
+        }
+        control.addEventListener("pointerdown", openPortal);
+        control.addEventListener("mousedown", openPortal);
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

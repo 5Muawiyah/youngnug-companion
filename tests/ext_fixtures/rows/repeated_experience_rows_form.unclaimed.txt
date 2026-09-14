@@ -1,0 +1,7 @@
+fixture: tests\ext_fixtures\rows\repeated_experience_rows_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 2
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	emp1	-	-	yes	no	Employer emp1
+input	text	title1	-	-	yes	no	Job title title1

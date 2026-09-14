@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Widget fixture — aria-owns popup detached from the control's subtree</title>
+  </head>
+  <body>
+    <!-- The popup is not a descendant of the control at all — it sits in a
+         completely unrelated part of the page — and is named ONLY by
+         aria-owns (never aria-controls), which the driver has to try as
+         well, not just aria-controls. -->
+    <section>
+      <div
+        id="combo"
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-owns="owned-listbox"
+        aria-expanded="false"
+        tabindex="0"
+      >
+        Choose a country
+      </div>
+    </section>
+
+    <div style="margin-top: 400px">
+      <p>Unrelated page content sits between the control and its popup.</p>
+    </div>
+
+    <ul id="owned-listbox" role="listbox" hidden>
+      <li role="option">Canada</li>
+      <li role="option">United States</li>
+      <li role="option">United Kingdom</li>
+      <li role="option">Australia</li>
+    </ul>
+
+    <script>
+      (function () {
+        const control = document.getElementById("combo");
+        const list = document.getElementById("owned-listbox");
+        function open() {
+          list.hidden = false;
+          control.setAttribute("aria-expanded", "true");
+        }
+        control.addEventListener("pointerdown", open);
+        control.addEventListener("mousedown", open);
+        list.addEventListener("click", (e) => {
+          const li = e.target.closest("[role='option']");
+          if (!li) return;
+          li.setAttribute("aria-selected", "true");
+          control.textContent = li.textContent;
+          list.hidden = true;
+          control.setAttribute("aria-expanded", "false");
+        });
+      })();
+    </script>
+
+    <script>
+      window.__keysSeen = [];
+      document.addEventListener(
+        "keydown",
+        function (e) {
+          window.__keysSeen.push((e.altKey ? "Alt+" : "") + e.key);
+        },
+        true,
+      );
+      window.ynTestDrive = async function (plan) {
+        const el = document.querySelector(plan.selector);
+        const r = await ynDriveCombobox(el, plan.target);
+        return {
+          ok: !!(r && r.ok),
+          report: {
+            matchedText: r && r.matched ? (r.matched.textContent || "").trim() : null,
+            reason: r && r.error,
+            keysSeen: window.__keysSeen.slice(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

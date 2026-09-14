@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Repeater: stated cap</title></head>
+<body>
+<form id="app-form">
+  <button type="button" id="decoy" aria-label="Add and Submit">Add and Submit</button>
+  <section aria-label="Work Experience" id="exp-section">
+    <div id="row-list"></div>
+    <button type="button" id="add-btn">Add another entry</button>
+    <span id="count-text">0 of 10 entries added</span>
+  </section>
+</form>
+<script>
+  window.__decoyClicked = false;
+  document.getElementById("decoy").addEventListener("click", function () {
+    window.__decoyClicked = true;
+  });
+  (function () {
+    var n = 0;
+    var cap = 10;
+    document.getElementById("add-btn").addEventListener("click", function () {
+      if (n >= cap) return; // the page's own hard cap — Add goes inert past it
+      n += 1;
+      var row = document.createElement("div");
+      row.className = "exp-row";
+      row.innerHTML =
+        '<input class="company" />' +
+        '<input class="title" />' +
+        '<textarea class="description"></textarea>';
+      document.getElementById("row-list").appendChild(row);
+      document.getElementById("count-text").textContent =
+        n + " of " + cap + " entries added";
+    });
+  })();
+</script>
+</body>
+</html>

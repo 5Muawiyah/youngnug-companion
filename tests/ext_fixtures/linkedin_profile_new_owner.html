@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo Student | Profile</title>
+  </head>
+  <!--
+  Fixture reproducing the REWORKED LinkedIn profile DOM (the generation that
+  removed artdeco classes, #experience-style id anchors, li lists and
+  aria-hidden span duplication). Structure mirrors the live page; every name
+  is invented.
+  What this pins, and the reader relies on:
+    - no <h1>: the intro card is the first <section> in <main>, titled by an
+      <h2> holding the person's name (nested inside a link, as live);
+    - profile sections found ONLY by visible heading text, with trailing
+      counts ("Skills (5)") stripped;
+    - entries are logo-<figure>-anchored nested-div blocks with <hr>
+      separators — text nodes are the data;
+    - owner-only affordances: "Add section" / "Enhance profile" control text,
+      a per-section /edit/forms/ link, and the private Analytics card;
+    - the Skills card previews a couple of skills; "Show all" soft-navigates
+      (pushState, script below) to a details view carrying the full list, and
+      history.back() restores the profile view — the reader's same-tab
+      skills visit is exercised without real navigation.
+-->
+  <body>
+    <main>
+      <div id="profile-view">
+        <section>
+          <div>
+            <div>
+              <a href="/in/me/"
+                ><div>
+                  <div><h2>Demo Student</h2></div>
+                </div></a
+              >
+              <span>She/Her</span>
+              <div>
+                Final-year BSc (Hons) Finance and Economics student at Ashcombe
+                University London
+              </div>
+              <div>Brightway Retail · Ashcombe University London</div>
+              <div>
+                <span>London, England, United Kingdom</span><span>·</span
+                ><a href="#">Contact info</a>
+              </div>
+              <a href="#">6 connections</a>
+            </div>
+            <div>
+              <button>Open to</button>
+              <button>Add section</button>
+              <button>Enhance profile</button>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div>
+              <h2>Analytics</h2>
+              <span>Private to you</span>
+            </div>
+            <div>
+              <div><span>8 profile views</span></div>
+              <hr />
+              <div><span>3 search appearances</span></div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div>
+              <h2>About</h2>
+            </div>
+            <div>
+              <div>
+                Final-year finance student who runs the university investment
+                society's bookkeeping and volunteers at Riverside Foodbank on
+                weekends.
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Experience</h2>
+                <div>
+                  <button aria-label="Add new experience">
+                    <span>+</span>
+                  </button>
+                  <a href="/in/me/details/experience/"><span></span></a>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Team Member</div>
+                          <div>Brightway Retail · Part-time</div>
+                          <div>Jun 2024 - Present · 1 yr 2 mos</div>
+                          <div>London, England, United Kingdom · Hybrid</div>
+                          <div>
+                            Served customers on tills and handled cash
+                            reconciliation at close. Trained two new starters on
+                            stock rotation procedures.<span>…</span
+                            ><span>more</span>
+                          </div>
+                          <div>Skills: Customer Service · Cash Handling</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <hr />
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Summer Intern</div>
+                          <div>Brackenford Consulting · Internship</div>
+                          <div>Jul 2025 – Aug 2025 · 2 mos</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Volunteering</h2>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Volunteer</div>
+                          <div>Riverside Foodbank</div>
+                          <div>Jan 2023 - Present · 3 yrs</div>
+                          <div>Poverty Alleviation</div>
+                          <div>
+                            Sort and pack weekend food parcels for around forty
+                            local families.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Education</h2>
+                <div>
+                  <a href="/in/me/details/education/edit/forms/103743035"
+                    ><span></span
+                  ></a>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Ashcombe University London</div>
+                          <div>2023 – 2026</div>
+                          <div>BSc (Hons) Finance and Economics</div>
+                          <div>Grade: First-class honours</div>
+                          <div>
+                            Activities and societies: Investment Society
+                            treasurer
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <hr />
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Eastvale Sixth Form</div>
+                          <div>Sep 2021 – Aug 2023</div>
+                          <div>A-Level Economics, A-Level Geography</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a href="/in/me/details/education/">Show all 3 educations</a>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Licenses &amp; certifications (1)</h2>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <figure><img src="" alt="" /></figure>
+                        <div>
+                          <div>Investment Banking Virtual Experience</div>
+                          <div>Prospera Virtual</div>
+                          <div>Issued Aug 2025 · Expires Aug 2027</div>
+                          <div>Credential ID ABC123</div>
+                          <a href="https://credentials.example/abc123"
+                            >Show credential</a
+                          >
+                          <div>Skills: Financial Modelling</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Skills (5)</h2>
+              </div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>Microsoft Excel</div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <hr />
+                  <div>
+                    <div>
+                      <div>Python</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <a id="skills-show-all" href="/in/me/details/skills/"
+                >Show all 5 skills</a
+              >
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Projects</h2>
+              </div>
+              <div>
+                <div>
+                  <div>Investment Society Budget Tracker</div>
+                  <div>Jan 2025 - Mar 2025</div>
+                  <div>
+                    Built a spreadsheet tracker for the society's event budgets
+                    with monthly variance reporting.
+                  </div>
+                  <div>Skills: Microsoft Excel · Python</div>
+                </div>
+                <hr />
+                <div>
+                  <div>Foodbank Rota Planner</div>
+                  <div>
+                    Small web page that plans volunteer shifts for the weekend
+                    parcel runs.
+                  </div>
+                  <a href="#">Show project</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section>
+          <div>
+            <div></div>
+            <div>
+              <div>
+                <h2>Languages</h2>
+              </div>
+              <div>
+                <div>
+                  <div>English</div>
+                  <div>Native or bilingual proficiency</div>
+                </div>
+                <hr />
+                <div>
+                  <div>Urdu</div>
+                  <div>Professional working proficiency</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section id="skills-details-view" hidden>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <button aria-label="Back"><span></span></button>
+                  <p>Skills</p>
+                </div>
+              </div>
+              <nav>
+                <ul>
+                  <li><button>All</button></li>
+                  <li><button>Industry Knowledge</button></li>
+                  <li><button>Tools &amp; Technologies</button></li>
+                  <li><button>Languages</button></li>
+                </ul>
+              </nav>
+            </div>
+            <div>
+              <div id="skills-details-list"></div>
+              <template id="skills-details-template">
+                <div>
+                  <div>Microsoft Excel</div>
+                  <div>2 endorsements</div>
+                </div>
+                <hr />
+                <div><div>Python</div></div>
+                <hr />
+                <div><div>Financial Modelling</div></div>
+                <hr />
+                <div><div>Bookkeeping</div></div>
+                <hr />
+                <div><div>Data Analysis</div></div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      // Emulates the live SPA: "Show all skills" soft-navigates (pushState) to
+      // the details view; history.back() restores the profile view. The list is
+      // revealed on a DELAY so the reader's settle-poll path is exercised.
+      (function () {
+        var showAll = document.getElementById("skills-show-all");
+        var profileView = document.getElementById("profile-view");
+        var detailsView = document.getElementById("skills-details-view");
+        function showDetails() {
+          profileView.hidden = true;
+          detailsView.hidden = false;
+          // the live page mounts the list lazily — clone it in on reveal so
+          // a parse BEFORE the settle genuinely finds nothing
+          var list = document.getElementById("skills-details-list");
+          var tpl = document.getElementById("skills-details-template");
+          if (list && tpl && !list.childElementCount) {
+            list.appendChild(tpl.content.cloneNode(true));
+          }
+        }
+        function showProfile() {
+          profileView.hidden = false;
+          detailsView.hidden = true;
+        }
+        showAll.addEventListener("click", function (e) {
+          e.preventDefault();
+          history.pushState({}, "", showAll.getAttribute("href"));
+          setTimeout(showDetails, 600);
+        });
+        window.addEventListener("popstate", function () {
+          if (/\/details\/skills/.test(location.pathname)) showDetails();
+          else showProfile();
+        });
+      })();
+    </script>
+  </body>
+</html>

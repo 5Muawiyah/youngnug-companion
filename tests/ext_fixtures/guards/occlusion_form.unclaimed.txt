@@ -1,0 +1,5 @@
+fixture: tests\ext_fixtures\guards\occlusion_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 0
+
+tag	type	id	name	automation-id	visible	disabled	label

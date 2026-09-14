@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — an ordinary text field, no masking at all</title>
+  </head>
+  <body>
+    <label for="plain">Reference number</label>
+    <input id="plain" type="text" />
+
+    <script>
+      window.ynTestVerify = async function (plan) {
+        let typePerCharCalls = 0;
+        const orig = window.ynTypeValuePerChar;
+        window.ynTypeValuePerChar = async function (...args) {
+          typePerCharCalls += 1;
+          return orig.apply(this, args);
+        };
+        const el = document.getElementById("plain");
+        const intents = [
+          {
+            el,
+            kind: "text",
+            value: plan.value,
+            fieldKey: "answers.reference",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        window.ynTypeValuePerChar = orig;
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            finalValue: el.value,
+            typePerCharCalls,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

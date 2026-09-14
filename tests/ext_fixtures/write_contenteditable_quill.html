@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a Quill-style rich-text editor stays refused</title>
+  </head>
+  <body>
+    <label id="cover-label">Cover note</label>
+    <div class="ql-container">
+      <div id="quill" class="ql-editor" contenteditable="true" aria-labelledby="cover-label">
+        <p><br /></p>
+      </div>
+    </div>
+
+    <script>
+      window.ynTestContentEditable = async function (plan) {
+        const el = document.getElementById(plan.id);
+        const intents = [
+          {
+            el,
+            kind: "contenteditable_plain",
+            value: plan.value,
+            fieldKey: "answers.cover_note",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            unresolved: report.unresolved.map((f) => f.fieldKey),
+            finalText: el.textContent,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

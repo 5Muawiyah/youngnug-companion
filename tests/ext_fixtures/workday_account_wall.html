@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Create Account — Workday wall fixture</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 480px;
+        margin: 24px auto;
+        padding: 0 16px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 4px;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        max-width: 360px;
+        padding: 6px 8px;
+        margin-bottom: 12px;
+      }
+      /* Visible honeypot (Workday-shaped) — must stay empty */
+      .hp-row {
+        margin: 12px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Mimics Workday "Create Account" step (Lloyd's apply/applyManually wall):
+        - heading Create Account
+        - email + password + verify password
+        - honeypot website ("for robots only")
+        - data-automation-id markers so detect.js fingerprints Workday on a
+          local fixture URL (same pattern as sr_dropzone_form).
+      Adapter must yield ZERO fill intents (assist mode); email stays empty.
+    -->
+    <div data-automation-id="createAccountSection">
+      <h1 data-automation-id="pageHeaderTitleText">Create Account</h1>
+      <p>Sign in or create an account to continue your application.</p>
+      <!--
+        Password Requirements block — verbatim Lloyd's/wd3 fixture (bullet
+        ORDER is not stable across tenants; this one is the Lloyd's order).
+        Parser must match each line independently, never by position.
+      -->
+      <p>Password Requirements:</p>
+      <ul id="password-requirements">
+        <li>An alphabetic character</li>
+        <li>A special character</li>
+        <li>A numeric character</li>
+        <li>A lowercase character</li>
+        <li>An uppercase character</li>
+        <li>A minimum of 8 characters</li>
+      </ul>
+      <form
+        id="create-account-form"
+        data-automation-id="createAccountForm"
+        action="#"
+        onsubmit="return false;"
+      >
+        <p>
+          <label for="input-email">Email Address</label>
+          <input
+            type="text"
+            id="input-email"
+            data-automation-id="email"
+            autocomplete="email"
+            value=""
+          />
+        </p>
+        <p>
+          <label for="input-password">Password</label>
+          <input
+            type="password"
+            id="input-password"
+            data-automation-id="password"
+            autocomplete="new-password"
+            value=""
+          />
+        </p>
+        <p>
+          <label for="input-verify">Verify Password</label>
+          <input
+            type="password"
+            id="input-verify"
+            data-automation-id="verifyPassword"
+            autocomplete="new-password"
+            value=""
+          />
+        </p>
+        <div class="hp-row">
+          <label for="website_hp"
+            >This input is for robots only, do not enter if you're human.</label
+          >
+          <input type="text" id="website_hp" name="website" value="" />
+        </div>
+        <p>
+          <button
+            type="submit"
+            id="create-account-btn"
+            data-automation-id="createAccountSubmitButton"
+          >
+            Create Account
+          </button>
+        </p>
+      </form>
+    </div>
+    <script>
+      window.__submitted = false;
+      var form = document.getElementById("create-account-form");
+      var btn = document.getElementById("create-account-btn");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

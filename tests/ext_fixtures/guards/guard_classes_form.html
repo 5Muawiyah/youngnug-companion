@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Job application</title></head>
+<body>
+  <!-- the write-time fix, proved end to end through ynFillAnyPage. -->
+  <form id="app">
+    <label for="first">First name</label>
+    <input id="first" name="first_name" type="text" />
+
+    <!-- TRUTH: must be TICKED from profile.right_to_work.uk_rtw, never
+         refused as "terms" (the old YN_TERMS_SIGNAL_RE bug). -->
+    <label>
+      <input id="rtw" name="right_to_work" type="checkbox" />
+      I am authorised to work in the UK
+    </label>
+
+    <!-- POLICY: must stay UNCHECKED and be reported as a refusal. -->
+    <label>
+      <input id="privacy" name="privacy_agree" type="checkbox" />
+      I agree to the privacy policy
+    </label>
+
+    <!-- POLICY, three phrasings: never ticked, 0 of 3. -->
+    <label>
+      <input id="subscribe1" name="subscribe_alerts" type="checkbox" />
+      Subscribe to job alerts
+    </label>
+    <label>
+      <input id="subscribe2" name="newsletter" type="checkbox" />
+      Sign up for our marketing newsletter
+    </label>
+    <label>
+      <input id="subscribe3" name="sms_opt_in" type="checkbox" />
+      I consent to receive SMS updates
+    </label>
+  </form>
+</body>
+</html>

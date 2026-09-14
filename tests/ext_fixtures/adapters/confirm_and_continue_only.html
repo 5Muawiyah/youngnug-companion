@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Only a Confirm and continue button</title></head>
+<body>
+<section id="contact-card" aria-label="Contact details">
+  <div class="summary">
+    <p>Ada Lovelace</p>
+  </div>
+  <button type="button" id="confirm-btn">Confirm and continue</button>
+  <input id="phone-field" disabled />
+</section>
+<script>
+  window.__confirmClicked = false;
+  document.getElementById("confirm-btn").addEventListener("click", function () {
+    window.__confirmClicked = true;
+  });
+</script>
+</body>
+</html>

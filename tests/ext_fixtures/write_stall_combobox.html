@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a combobox that never renders any options</title>
+  </head>
+  <body>
+    <div id="combo" role="combobox" aria-haspopup="listbox" tabindex="0">
+      Choose a country
+    </div>
+    <!-- Deliberately no JS at all opens or populates anything: this control
+         cannot ever be resolved, so its own internal timeouts would
+         eventually report a miss — the stall detector's job is to end the
+         WHOLE attempt sooner than that, via a small ctx.stallMs. -->
+
+    <script>
+      window.__navigated = false;
+      window.addEventListener("beforeunload", () => {
+        window.__navigated = true;
+      });
+      window.ynTestStall = async function (plan) {
+        const el = document.getElementById("combo");
+        const intents = [
+          { el, kind: "combobox", value: "United Kingdom", fieldKey: "address.country" },
+        ];
+        const startedAt = Date.now();
+        const report = await ynExecuteIntents(intents, { stallMs: plan.stallMs });
+        const elapsedMs = Date.now() - startedAt;
+        return {
+          ok: true,
+          report: {
+            stalled: report.stalled,
+            errors: report.errors,
+            elapsedMs,
+            navigated: window.__navigated,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

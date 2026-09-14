@@ -1,0 +1,8 @@
+fixture: tests/ext_fixtures/adapters/pinpoint_apply_form.html
+detected ats: pinpoint (forced)
+unclaimed controls: 3
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	application_form_application_middle_name	application_form[application][middle_name]	-	yes	no	Middle Name application_form[application][middle_name] application_form_application_middle_name
+input	file	-	application_form[application][cv]	-	yes	no	application_form[application][cv]
+textarea	textarea	personal-summary	application_form[application][summary]	-	yes	no	application_form[application][summary] personal-summary

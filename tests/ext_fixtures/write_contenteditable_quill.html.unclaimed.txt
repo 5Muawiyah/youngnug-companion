@@ -1,0 +1,6 @@
+fixture: tests\ext_fixtures\write_contenteditable_quill.html
+detected ats: unknown (unknown)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+div	-	quill	-	-	yes	no	Cover note quill

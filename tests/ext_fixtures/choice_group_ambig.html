@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Choice-group fixture — two radio labels share one substring</title>
+  </head>
+  <body>
+    <h1>Your availability</h1>
+    <!-- BOTH options contain "1 month" — the resolver must refuse; nothing
+         may be checked (an ambiguous match is an honest fail) -->
+    <fieldset>
+      <legend>Notice period</legend>
+      <label
+        ><input type="radio" name="notice" id="a_min" value="min" /> 1 month
+        minimum</label
+      >
+      <label
+        ><input type="radio" name="notice" id="a_max" value="max" /> 1 month
+        maximum</label
+      >
+    </fieldset>
+  </body>
+</html>

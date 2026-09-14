@@ -1,0 +1,8 @@
+fixture: tests\ext_fixtures\write_undo_eight_fields.html
+detected ats: unknown (unknown)
+unclaimed controls: 3
+
+tag	type	id	name	automation-id	visible	disabled	label
+textarea	textarea	notes	-	-	yes	no	Notes notes
+input	checkbox	newsletter_optin	-	-	yes	no	Newsletter newsletter_optin
+input	file	cv	-	-	yes	no	CV cv

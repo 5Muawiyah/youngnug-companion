@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co (Dropzone upload)</title>
+    <style>
+      .file-upload {
+        border: 2px dashed #94a3b8;
+        padding: 16px;
+        max-width: 420px;
+      }
+      .file-upload__filename {
+        font-weight: 600;
+        color: #0f766e;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <form id="application-form">
+      <p>
+        <label for="first_name">First name</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+      <!-- Greenhouse-shaped upload chrome: input change alone shows the
+           known uploadFile error (simulates registry miss). Only a drop on
+           .file-upload (or a second intentional clear of the error path via
+           drop) registers the file and renders .file-upload__filename. -->
+      <div
+        class="file-upload"
+        id="resume-drop"
+        role="group"
+        data-allow-s3="false"
+        data-testid="resume-drop"
+      >
+        <div id="upload-label-resume" class="label upload-label">Resume/CV</div>
+        <div class="file-upload__wrapper" id="resume-wrap">
+          <button type="button" class="btn" id="attach-btn">Attach</button>
+          <label class="visually-hidden" for="resume">Attach</label>
+          <input
+            id="resume"
+            class="visually-hidden"
+            type="file"
+            name="resume"
+            accept=".pdf,.doc,.docx,.txt,.rtf"
+          />
+          <p id="accepted-filetypes" class="file-upload__filetypes">
+            Accepted file types: pdf, doc, docx, txt, rtf
+          </p>
+        </div>
+      </div>
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      window.__submitted = false;
+      window.__dropAccepted = false;
+      window.__changeAttempts = 0;
+
+      var form = document.getElementById("application-form");
+      var submitBtn = document.getElementById("submit-btn");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      submitBtn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+
+      var resume = document.getElementById("resume");
+      var wrap = document.getElementById("resume-wrap");
+      var dropHost = document.getElementById("resume-drop");
+
+      function showError() {
+        wrap.innerHTML =
+          '<p class="upload-error">Cannot read properties of undefined (reading \'uploadFile\')</p>' +
+          '<input id="resume" class="visually-hidden" type="file" name="resume" accept=".pdf,.doc,.docx,.txt,.rtf" />';
+        wireInput(document.getElementById("resume"));
+      }
+
+      function showSuccess(name) {
+        window.__dropAccepted = true;
+        wrap.innerHTML =
+          '<div class="file-upload__filename">' +
+          '<p class="body body__secondary">' +
+          (name || "cv.pdf") +
+          "</p>" +
+          '<button type="button" class="icon-button" aria-label="Remove file">×</button>' +
+          "</div>";
+      }
+
+      function wireInput(input) {
+        if (!input) return;
+        input.addEventListener("change", function () {
+          window.__changeAttempts += 1;
+          // First path (input.files + change) always fails — mirrors the
+          // live Greenhouse uploadFile registry miss. Drop must succeed.
+          showError();
+        });
+      }
+
+      wireInput(resume);
+
+      ["dragenter", "dragover"].forEach(function (type) {
+        dropHost.addEventListener(type, function (e) {
+          e.preventDefault();
+        });
+      });
+      dropHost.addEventListener("drop", function (e) {
+        e.preventDefault();
+        var files =
+          (e.dataTransfer && e.dataTransfer.files) ||
+          (e.dataTransfer && e.dataTransfer.items);
+        var file =
+          e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+        if (file) {
+          showSuccess(file.name);
+        }
+      });
+    </script>
+  </body>
+</html>

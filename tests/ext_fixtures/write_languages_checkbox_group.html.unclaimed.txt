@@ -1,0 +1,10 @@
+fixture: tests\ext_fixtures\write_languages_checkbox_group.html
+detected ats: unknown (unknown)
+unclaimed controls: 5
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	checkbox	lang-en	-	-	yes	no	English lang-en
+input	checkbox	lang-fr	-	-	yes	no	French lang-fr
+input	checkbox	lang-de	-	-	yes	no	German lang-de
+input	checkbox	lang-ur	-	-	yes	no	Urdu lang-ur
+input	checkbox	lang-es	-	-	yes	no	Spanish lang-es

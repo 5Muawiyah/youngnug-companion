@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Select fixture — two options share one country substring</title>
+  </head>
+  <body>
+    <h1>Location</h1>
+    <!-- two options contain "United Kingdom" — the engine must refuse -->
+    <label for="s_ambig">Country (ambiguous)</label>
+    <select id="s_ambig">
+      <option value="">Choose…</option>
+      <option value="uk-eng">United Kingdom (England)</option>
+      <option value="uk-sco">United Kingdom (Scotland)</option>
+    </select>
+
+    <!-- exactly one option contains it — the engine may fill -->
+    <label for="s_one">Country (single partial)</label>
+    <select id="s_one">
+      <option value="">Choose…</option>
+      <option value="uk">United Kingdom of Great Britain and NI</option>
+      <option value="fr">France</option>
+    </select>
+  </body>
+</html>

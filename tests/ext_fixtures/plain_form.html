@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Acme Test Co</title>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <form id="acme-apply-form" action="#" onsubmit="return false;">
+      <p>
+        <label for="first_name">First name</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="last_name">Last name</label>
+        <input
+          type="text"
+          id="last_name"
+          name="last_name"
+          autocomplete="family-name"
+        />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+      <p>
+        <label for="phone">Phone</label>
+        <input type="tel" id="phone" name="phone" />
+      </p>
+      <p>
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" />
+      </p>
+      <p>
+        <label for="postcode">Postcode</label>
+        <input type="text" id="postcode" name="postcode" />
+      </p>
+      <p>
+        <label for="linkedin">LinkedIn profile</label>
+        <input type="text" id="linkedin" name="linkedin" />
+      </p>
+      <p>
+        <label for="github">GitHub profile</label>
+        <input type="text" id="github" name="github" />
+      </p>
+      <p>
+        <label for="cover_letter">Cover letter</label><br />
+        <textarea
+          id="cover_letter"
+          name="cover_letter"
+          rows="6"
+          cols="40"
+        ></textarea>
+      </p>
+      <p>
+        <label for="cv_file">Upload your CV</label>
+        <input type="file" id="cv_file" name="cv_file" />
+      </p>
+      <fieldset>
+        <legend>Are you eligible to work in the UK?</legend>
+        <label
+          ><input
+            type="radio"
+            id="rtw_yes"
+            name="rtw"
+            value="yes"
+            aria-label="Right to work in the UK - Yes"
+          />
+          Yes</label
+        >
+        <label
+          ><input
+            type="radio"
+            id="rtw_no"
+            name="rtw"
+            value="no"
+            aria-label="Right to work in the UK - No"
+          />
+          No</label
+        >
+      </fieldset>
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      // never-submit sweep: any accidental activation of the submit control
+      // (click OR a real form submit) is recorded here, and prevented so the
+      // page never navigates away mid-test.
+      window.__submitted = false;
+      var form = document.getElementById("acme-apply-form");
+      var btn = document.getElementById("submit-btn");
+      btn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

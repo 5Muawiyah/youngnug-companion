@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a cascade whose second level has two identical entries</title>
+  </head>
+  <body>
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="">Choose…</option>
+      <option value="uk">United Kingdom</option>
+    </select>
+
+    <label for="region">Region</label>
+    <select id="region"><option value="">Choose a country first</option></select>
+
+    <label for="city">City</label>
+    <select id="city"><option value="">Choose a region first</option></select>
+
+    <script>
+      (function () {
+        const country = document.getElementById("country");
+        const region = document.getElementById("region");
+        const city = document.getElementById("city");
+        function fillOptions(sel, values, placeholder) {
+          sel.innerHTML = "";
+          const ph = document.createElement("option");
+          ph.value = "";
+          ph.textContent = placeholder;
+          sel.appendChild(ph);
+          for (const v of values) {
+            const o = document.createElement("option");
+            o.value = v.toLowerCase() + Math.random().toString(36).slice(2, 6);
+            o.textContent = v;
+            sel.appendChild(o);
+          }
+        }
+        country.addEventListener("change", () => {
+          setTimeout(() => {
+            // Two entries that read exactly "England" — a data-quality bug
+            // a real ATS import can genuinely produce. Neither is unique.
+            fillOptions(region, ["England", "England", "Scotland"], "Choose a region");
+            fillOptions(city, [], "Choose a region first");
+          }, 30);
+        });
+      })();
+
+      window.ynTestCascade = async function (plan) {
+        const levels = [
+          document.getElementById("country"),
+          document.getElementById("region"),
+          document.getElementById("city"),
+        ];
+        const r = await ynDriveCascade(levels, plan.parts);
+        return {
+          ok: r.ok,
+          report: {
+            stoppedAtLevel: r.stoppedAtLevel,
+            reason: r.reason,
+            countryText:
+              levels[0].options[levels[0].selectedIndex]?.textContent || "",
+            regionValue: levels[1].value,
+            cityValue: levels[2].value,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

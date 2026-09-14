@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — a phone mask reformats the digits on input</title>
+  </head>
+  <body>
+    <label for="phone">Phone</label>
+    <input id="phone" type="tel" />
+
+    <script>
+      (function () {
+        const el = document.getElementById("phone");
+        el.addEventListener("input", () => {
+          const digits = el.value.replace(/\D/g, "");
+          if (digits.length === 11) {
+            const reformatted = digits.slice(0, 5) + " " + digits.slice(5);
+            if (el.value !== reformatted) el.value = reformatted;
+          }
+        });
+      })();
+
+      window.ynTestVerify = async function () {
+        const el = document.getElementById("phone");
+        const intents = [
+          {
+            el,
+            kind: "text",
+            value: "07700900123",
+            fieldKey: "contact.phone",
+            confidence: "exact",
+          },
+        ];
+        const report = await ynExecuteIntents(intents, {});
+        return {
+          ok: true,
+          report: {
+            filled: report.filled.map((f) => f.fieldKey),
+            unresolved: report.unresolved.map((f) => f.fieldKey),
+            finalValue: el.value,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

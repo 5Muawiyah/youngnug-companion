@@ -1,0 +1,6 @@
+fixture: tests/ext_fixtures/adapters/dover_apply_form.html
+detected ats: dover (forced)
+unclaimed controls: 1
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	file	-	-	-	yes	no	Dover apply form (reconstructed from a live page)

@@ -1,0 +1,14 @@
+{
+  "page": "serp",
+  "site": "the_trackr",
+  "url": "/uk-tech/summer-internships",
+  "capturedAt": "2026-09-03",
+  "note": "THIS IS A CONSTRUCTED FIXTURE, NOT A LIVE CAPTURE. Built from the observed markup of an app.the-trackr.com tracker table (the header cell id company-col-header, the trackr-status-dropdown element in the first cell, section rows with colspan 100, the company link under /company/ and the utm-tagged external programme link), read in a signed-in browser on 3 Sep 2026, never invented selectors; no server fetch of the site was ever made. Labelled a fixture, never a live capture.",
+  "rowCount": 2,
+  "sectionRow": "<tr><td colspan=\"100\" class=\"sticky top-[41px] z-10 bg-gray-100 py-1 pl-4 font-semibold\"><i class=\"fa fa-handshake\"></i> Promoted</td></tr>",
+  "rows": [
+    "<tr class=\"bg-white border-b border-gray-200\">\n  <td><trackr-status-dropdown data-tracker-id=\"1\"></trackr-status-dropdown></td>\n  <td><a href=\"/company/bending-spoons\">Bending Spoons</a></td>\n  <td><a href=\"https://jobs.bendingspoons.com/positions/abc123?utm_source=Trackr&utm_medium=tracker&utm_campaign=UK_Tech_2027&source=Trackr\">Software engineer, summer intern UK</a></td>\n  <td class=\"bg-trackr-green\">25 Aug 26</td>\n  <td></td>\n  <td>02 May 25</td>\n  <td>CV / CL / WA badges</td>\n  <td>Yes</td>\n  <td></td>\n</tr>",
+    "<tr class=\"bg-white border-b border-gray-200\">\n  <td><trackr-status-dropdown data-tracker-id=\"2\"></trackr-status-dropdown></td>\n  <td><a href=\"/company/monzo\">Monzo</a></td>\n  <td><a href=\"https://monzo.com/careers/positions/xyz789?utm_source=Trackr&utm_medium=tracker\">Data Science Summer Intern</a></td>\n  <td class=\"bg-trackr-green\">01 Sep 26</td>\n  <td>15 Oct 26</td>\n  <td>10 Apr 25</td>\n  <td>CV / CL badges</td>\n  <td>No</td>\n  <td>Fast-track process</td>\n</tr>"
+  ],
+  "secondSectionRow": "<tr><td colspan=\"100\" class=\"sticky top-[41px] z-10 bg-gray-100 py-1 pl-4 font-semibold\">Data Science</td></tr>"
+}

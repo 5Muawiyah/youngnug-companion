@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>LinkedIn Easy Apply, step 2 (resume) - captured</title>
+    <!--
+      LinkedIn Easy Apply modal, step 2 'Resume' (33%), same session and posting; 'A resume is required' is the wizard's own rule.
+      Reduction (one deterministic function run in the live page): svg innards,
+      script/style/link/iframe, comments, inline style and srcset dropped; src
+      values blanked and href query strings removed; selects with more than
+      eight options keep six plus the selected one (data-fixture-options-
+      trimmed-from); role=listbox lists keep the first and the aria-selected
+      option (same attribute). Personal data replaced with invented values
+      (Sam Example, student@example.com, 07700 900123, SW1A 1AA, Exampletown).
+      Everything else is the markup the site served.
+    -->
+    <style>
+      .hidden, [hidden] { display: none; }
+      .visually-hidden, .a11y-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    </style>
+  </head>
+  <body>
+<div data-test-modal="" role="dialog" tabindex="-1" class="artdeco-modal artdeco-modal--layer-default jobs-easy-apply-modal" size="large" aria-labelledby="jobs-apply-header">
+<span class="a11y-text">Dialog content start.</span>
+<button aria-label="Dismiss" id="ember428" class="artdeco-button artdeco-button--circle artdeco-button--muted artdeco-button--2 artdeco-button--tertiary ember-view artdeco-modal__dismiss" data-test-modal-close-btn=""> <svg role="none" aria-hidden="true" class="artdeco-button__icon " xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-supported-dps="24x24" data-test-icon="close-medium"></svg>
+<span class="artdeco-button__text">
+</span></button>
+<div id="ember429" class="artdeco-modal__header ember-view">
+<h2 id="jobs-apply-header">
+Apply to Wild Capital
+</h2>
+</div>
+<div id="ember430" class="artdeco-modal__content jobs-easy-apply-modal__content p0 ember-view">
+<div class="wXuEUQfUdpdsXtuqaYeKocdchuTIXcrhOWJTY" tabindex="-1" aria-label="Your job application progress is at 33 percent." role="region" data-artdeco-is-focused="true">
+<div class="display-flex ph5 pv2">
+<div id="ember431" class="flex-grow-1 artdeco-completeness-meter-linear ember-view"><div class="artdeco-completeness-meter-linear__progress-container ">
+<progress max="100" value="33" class="artdeco-completeness-meter-linear__progress-element" aria-valuetext="Current value: 33" aria-valuemin="0" aria-valuenow="33" aria-valuemax="100">
+Current value: 33
+</progress>
+</div>
+</div>
+<span class="pl3 t-14 t-black--light" aria-label="Your job application progress is at 33 percent." role="note">
+33%
+</span>
+</div>
+<div>
+<form>
+<div class="ph5">
+<div class="BImeeCUgTqHKUTleNmkmsVJRPtAeezTGfrXMenfdw">
+<h3 class="t-16 t-bold">
+Resume
+</h3>
+<div class="full-width mt1 full-width display-flex flex-column">
+<span class="t-14
+jobs-document-upload__title--is-required">
+Be sure to include an updated resume
+</span>
+<div class="display-flex
+">
+<div class="js-jobs-document-upload__container
+display-flex flex-wrap" tabindex="-1">
+<label class="jobs-document-upload__upload-button artdeco-button artdeco-button--secondary artdeco-button--2 mt2" for="jobs-document-upload-file-input-upload-resume-urn:li:fsu_jobApplicationFileUploadFormElement:urn:li:jobs_applyformcommon_easyApplyFormElement:(4454011550,35278762650,document)" tabindex="0" aria-controls="jobs-document-upload-file-input-upload-resume-urn:li:fsu_jobApplicationFileUploadFormElement:urn:li:jobs_applyformcommon_easyApplyFormElement:(4454011550,35278762650,document)">
+<span role="button" aria-label="Upload resume button. Only, DOC, DOCX, PDF formats are supported. Max file size is (2 MB).">
+Upload resume
+</span>
+</label>
+<input name="file" class="hidden" id="jobs-document-upload-file-input-upload-resume-urn:li:fsu_jobApplicationFileUploadFormElement:urn:li:jobs_applyformcommon_easyApplyFormElement:(4454011550,35278762650,document)" accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" type="file">
+<p class="jobs-document-upload__format-text t-12 t-black--light full-width" aria-hidden="true">
+DOC, DOCX, PDF (2 MB)
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer role="presentation">
+<div class="jobs-easy-apply-footer__info">
+<p class="t-12 t-black--light">
+Submitting this application won’t change your LinkedIn profile.
+</p>
+<p class="t-12 t-black--light mt1">
+Application powered by LinkedIn. <a href="/help/linkedin/answer/71792" target="_blank" rel="noopener noreferrer" class="link-without-visited-state" data-control-name="help_center_unify" aria-label="Visit help center to know more" data-test-easy-apply-footer-ats-help="true">Help Center</a>
+</p>
+</div>
+<div class="display-flex justify-flex-end ph5 pv4">
+<button aria-label="Back to previous step" id="ember444" class="mr2 artdeco-button artdeco-button--2 artdeco-button--tertiary ember-view" type="button">
+<span class="artdeco-button__text">
+Back
+</span></button>
+<button aria-label="Continue to next step" id="ember441" class="artdeco-button artdeco-button--2 artdeco-button--primary ember-view" data-easy-apply-next-button="" data-live-test-easy-apply-next-button="" type="button">
+<span class="artdeco-button__text">
+Next
+</span></button>
+</div>
+</footer>
+</form>
+</div>
+</div>
+</div>
+<span class="a11y-text">Dialog content end.</span>
+</div>
+    <script>
+      // Tripwires for the never-submit / never-advance proofs. A real site
+      // would navigate; the fixture only records that a click happened.
+      window.__submitted = false;
+      window.__advanced = false;
+      window.__saved = false;
+      document.addEventListener("submit", function (e) { e.preventDefault(); window.__submitted = true; }, true);
+      document.addEventListener("click", function (e) {
+        var b = e.target && e.target.closest ? e.target.closest("button") : null;
+        if (!b) return;
+        var t = (b.textContent || "").replace(/\s+/g, " ").trim() + " " + (b.getAttribute("aria-label") || "");
+        if (/submit/i.test(t)) window.__submitted = true;
+        else if (/^(next|continue) |continue to next step|review your application/i.test(t + " ")) window.__advanced = true;
+        else if (/^save\b/i.test(t)) window.__saved = true;
+      }, true);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Pinpoint apply form (reconstructed from a live page)</title></head>
+<body>
+<form action="/en/postings/x/applications" id="new_application_form">
+  <input type="hidden" name="authenticity_token" value="t" />
+  <input id="application_form_application_first_name" type="text" name="application_form[application][first_name]" placeholder="First name" />
+  <input id="application_form_application_middle_name" type="text" name="application_form[application][middle_name]" placeholder="Middle Name" />
+  <input id="application_form_application_last_name" type="text" name="application_form[application][last_name]" placeholder="Last name" />
+  <input id="application_form_application_email" type="email" name="application_form[application][email]" placeholder="you@example.com" />
+  <input id="application_form_application_phone" type="tel" name="application_form[application][phone]" placeholder="Phone" />
+  <input type="hidden" id="phone-country-code-dropdown" name="application_form[application][phone_iso2]" />
+  <input id="application_form_application_linkedin_url" type="text" name="application_form[application][linkedin_url]" placeholder="https://www.linkedin.com/in/joebloggs" />
+  <input type="file" name="application_form[application][cv]" />
+  <textarea id="personal-summary" name="application_form[application][summary]"></textarea>
+
+  <div>
+    <label for="application_form_equality_monitoring_gender_identity">Gender identity</label>
+    <select id="application_form_equality_monitoring_gender_identity">
+      <option value="">Select...</option>
+      <option value="cis_male">Cisgender Male</option>
+      <option value="cis_female">Cisgender Female</option>
+    </select>
+    <input type="hidden" name="application_form[equality_monitoring_options][]" />
+  </div>
+  <div>
+    <label for="application_form_equality_monitoring_race_ethnicity">Race/Ethnicity</label>
+    <select id="application_form_equality_monitoring_race_ethnicity">
+      <option value="">Select...</option>
+      <option value="hispanic">Hispanic or Latine</option>
+    </select>
+    <input type="hidden" name="application_form[equality_monitoring_options][]" />
+  </div>
+
+  <button type="submit">Submit application</button>
+</form>
+</body>
+</html>

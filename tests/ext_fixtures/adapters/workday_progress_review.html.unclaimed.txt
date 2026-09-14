@@ -1,0 +1,5 @@
+fixture: tests/ext_fixtures/adapters/workday_progress_review.html
+detected ats: workday (forced)
+unclaimed controls: 0
+
+tag	type	id	name	automation-id	visible	disabled	label

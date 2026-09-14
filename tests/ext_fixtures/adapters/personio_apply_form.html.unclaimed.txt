@@ -1,0 +1,8 @@
+fixture: tests/ext_fixtures/adapters/personio_apply_form.html
+detected ats: personio (forced)
+unclaimed controls: 3
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	field-available_from	available_from	-	yes	no	Available from available_from field-available_from
+input	file	doc-input-cv	documents.cv	-	yes	no	Upload CV documents.cv doc-input-cv
+input	file	doc-input-other	documents.other	-	yes	no	Upload Other documents.other doc-input-other

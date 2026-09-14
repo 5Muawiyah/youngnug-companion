@@ -1,0 +1,5 @@
+fixture: tests\ext_fixtures\write_alert_beside_email.html
+detected ats: unknown (unknown)
+unclaimed controls: 0
+
+tag	type	id	name	automation-id	visible	disabled	label

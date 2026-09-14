@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Node-Replacement Hydration (Turbo/React-shaped)</title>
+  </head>
+  <body>
+    <h1>Apply (node-replacement simulation)</h1>
+    <!--
+      Models node-replacement hydration (Turbo/React-shaped): live
+      Teamtailor/Recruitee pages don't merely wipe .value on rerender — the
+      framework removes the input nodes outright and inserts fresh empty ones
+      with the same id/name. Cached element refs go stale; a re-write to the
+      old node is a no-op against the live DOM (the value-clear fixture in
+      hydration_revert_form.html covers the simpler wipe-only case).
+
+      This fixture models node replacement as a short hydration burst, then
+      stops, so a correct mutation-quiet observer can reach quiet and hold.
+      Gaps between replacements are deliberately shorter than quietMs
+      (default 800) so the observer does not false-exit on the calm between
+      wipes. After the burst, the page is quiet:
+
+        t=200ms  — replace first_name + email nodes (fresh empty inputs)
+        t=450ms  — replace again
+        t=700ms  — replace again (last)
+        t>=700ms — settle point: replacements STOP; quietMs later → hold
+
+      Selectors (id) stay stable across replacements — the observer must
+      re-query by selector each time, never cache the element ref.
+    -->
+    <div id="job-application-form">
+      <form id="apply-form" action="#" onsubmit="return false;">
+        <p>
+          <label for="candidate_first_name">First name</label>
+          <input
+            type="text"
+            id="candidate_first_name"
+            name="candidate[first_name]"
+          />
+        </p>
+        <p>
+          <label for="candidate_last_name">Last name</label>
+          <input
+            type="text"
+            id="candidate_last_name"
+            name="candidate[last_name]"
+          />
+        </p>
+        <p>
+          <label for="candidate_email">Email</label>
+          <input type="email" id="candidate_email" name="candidate[email]" />
+        </p>
+        <p>
+          <label for="candidate_phone">Phone</label>
+          <input type="tel" id="candidate_phone" name="candidate[phone]" />
+        </p>
+        <button type="submit" id="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      // NODE-REPLACEMENT (not value-clear): remove the live input and insert a
+      // brand-new empty one with the same id/name. Models Turbo/React hydrate.
+      // Only first_name + email are replaced; last_name + phone are controls
+      // that must NOT be disturbed by a correct observer.
+      window.__ynReplaceCount = 0;
+      // Burst with gaps < quietMs (800); last replace at 700ms then stop.
+      window.__ynReplaceSchedule = [200, 450, 700];
+      window.__ynSettledAt = 700;
+
+      function replaceNode(id, name, type) {
+        const old = document.getElementById(id);
+        if (!old || !old.parentNode) return;
+        const neu = document.createElement("input");
+        neu.type = type || "text";
+        neu.id = id;
+        neu.name = name;
+        // intentionally empty — this is the wipe
+        old.parentNode.replaceChild(neu, old);
+      }
+
+      function replaceIdentityFields() {
+        window.__ynReplaceCount += 1;
+        replaceNode("candidate_first_name", "candidate[first_name]", "text");
+        replaceNode("candidate_email", "candidate[email]", "email");
+      }
+
+      window.__ynReplaceSchedule.forEach(function (ms) {
+        setTimeout(replaceIdentityFields, ms);
+      });
+      // After 2s the page is "settled" — no further replacements. A correct
+      // observer reaches quietMs with both fields holding.
+    </script>
+  </body>
+</html>

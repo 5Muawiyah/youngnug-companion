@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — Undo restores every field the fill wrote</title>
+  </head>
+  <body>
+    <!-- 2 student-typed (already have a value; must never be touched) -->
+    <label for="typed1">First name</label>
+    <input id="typed1" value="Sam" />
+    <label for="typed2">Last name</label>
+    <input id="typed2" value="Example" />
+
+    <!-- 5 written by the fill (one React-controlled) -->
+    <label for="email">Email</label>
+    <input id="email" />
+    <label for="notes">Notes</label>
+    <textarea id="notes"></textarea>
+    <label for="country">Country</label>
+    <select id="country">
+      <option value="">Choose…</option>
+      <option value="uk">United Kingdom</option>
+    </select>
+    <label><input type="checkbox" id="rtw" /> I am authorised to work in the UK</label>
+    <label id="react-label">Phone (React-controlled)</label>
+    <input id="react_controlled" aria-labelledby="react-label" />
+
+    <!-- 1 file field -->
+    <label for="cv">CV</label>
+    <input id="cv" type="file" />
+
+    <script>
+      // A minimal React-controlled input: on 'input' it re-renders the value
+      // straight back from its own state UNLESS the write went through the
+      // native setter (React's _valueTracker sees the discrepancy and lets
+      // it through) — exactly the scenario ynSetNativeValue exists for.
+      (function () {
+        const el = document.getElementById("react_controlled");
+        let state = "";
+        const desc = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        );
+        el.addEventListener("input", () => {
+          state = el.value;
+        });
+        window.__reactControlledState = () => state;
+      })();
+
+      window.ynTestUndo = async function (plan) {
+        const els = {
+          typed1: document.getElementById("typed1"),
+          typed2: document.getElementById("typed2"),
+          email: document.getElementById("email"),
+          notes: document.getElementById("notes"),
+          country: document.getElementById("country"),
+          agree: document.getElementById("rtw"),
+          react_controlled: document.getElementById("react_controlled"),
+          cv: document.getElementById("cv"),
+        };
+        const before = {
+          typed1: els.typed1.value,
+          typed2: els.typed2.value,
+          email: els.email.value,
+          notes: els.notes.value,
+          country: els.country.value,
+          agree: els.agree.checked,
+          react_controlled: els.react_controlled.value,
+        };
+
+        const intents = [
+          { el: els.email, kind: "text", value: "student@example.com", fieldKey: "contact.email", confidence: "exact" },
+          { el: els.notes, kind: "textarea", value: "Some notes", fieldKey: "answers.notes", confidence: "exact" },
+          { el: els.country, kind: "select", value: "United Kingdom", fieldKey: "address.country", confidence: "exact" },
+          { el: els.agree, kind: "checkbox", value: true, fieldKey: "right_to_work.uk_rtw", confidence: "exact" },
+          { el: els.react_controlled, kind: "text", value: "07700 900123", fieldKey: "contact.phone", confidence: "exact" },
+          { el: els.cv, kind: "file", value: { name: "cv.pdf", dataUrl: "data:application/pdf;base64,JVBERi0xLjQK", type: "application/pdf" }, fieldKey: "documents.cv", confidence: "exact" },
+        ];
+        const fillReport = await ynExecuteIntents(intents, {});
+
+        const afterFill = {
+          typed1: els.typed1.value,
+          typed2: els.typed2.value,
+          email: els.email.value,
+          notes: els.notes.value,
+          country: els.country.value,
+          agree: els.agree.checked,
+          react_controlled: els.react_controlled.value,
+          cvFiles: els.cv.files.length,
+        };
+
+        const undo1 = ynUndoFill();
+        // allow the queued microtask double-clear to run
+        await new Promise((r) => setTimeout(r, 0));
+        await new Promise((r) => setTimeout(r, 0));
+
+        const afterUndo = {
+          typed1: els.typed1.value,
+          typed2: els.typed2.value,
+          email: els.email.value,
+          notes: els.notes.value,
+          country: els.country.value,
+          agree: els.agree.checked,
+          react_controlled: els.react_controlled.value,
+          cvFiles: els.cv.files.length,
+        };
+
+        const undo2 = ynUndoFill();
+
+        return {
+          ok: true,
+          report: {
+            before,
+            afterFill,
+            afterUndo,
+            undo1,
+            undo2,
+            filledCount: fillReport.filled.length,
+            filledKeys: fillReport.filled.map((f) => f.fieldKey),
+            unresolvedKeys: fillReport.unresolved.map((f) => f.fieldKey),
+            revertedEntries: fillReport.reverted,
+            errors: fillReport.errors,
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture — React Hook Form style required-email validation</title>
+  </head>
+  <body>
+    <!-- Mimics React Hook Form + Zod's mode:'onBlur'/'onTouched': the error
+         node is removed only once the field has both received a REAL
+         InputEvent (not a plain Event) and a REAL FocusEvent blur (not a
+         plain Event) with a non-empty value — exactly what
+         instanceof-checking validators look for. -->
+    <label for="email">Email</label>
+    <input id="email" type="email" required />
+    <div id="err" role="alert">Email is required</div>
+
+    <script>
+      (function () {
+        const input = document.getElementById("email");
+        const err = document.getElementById("err");
+        let touchedByRealBlur = false;
+        input.addEventListener("blur", (e) => {
+          if (e instanceof FocusEvent) touchedByRealBlur = true;
+          validate();
+        });
+        input.addEventListener("input", (e) => {
+          if (e instanceof InputEvent) validate();
+        });
+        function validate() {
+          if (touchedByRealBlur && input.value.trim() && document.getElementById("err")) {
+            err.remove();
+          }
+        }
+        window.__rhfTouched = () => touchedByRealBlur;
+      })();
+    </script>
+
+    <script>
+      window.ynTestWriteEvents = async function (plan) {
+        const el = document.getElementById("email");
+        ynSetNativeValue(el, plan.value);
+        return {
+          ok: true,
+          report: {
+            value: el.value,
+            errNodePresent: !!document.getElementById("err"),
+            touched: window.__rhfTouched(),
+          },
+        };
+      };
+    </script>
+  </body>
+</html>

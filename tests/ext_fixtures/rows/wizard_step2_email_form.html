@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Application — step 2 (confirm your details)</title></head>
+<body>
+  <!-- a later wizard step RE-ASKING for email — a separate page/DOM
+       from step 1, exactly like a real multi-step ATS wizard. Each step
+       runs ynHeuristicIntents fresh, so this must fill exactly like step 1
+       did, not come back empty because "email was already used". -->
+  <form id="app">
+    <label for="email2">Confirm your email address</label>
+    <input id="email2" type="email" />
+  </form>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Repeater: silent stop, no stated cap</title></head>
+<body>
+<form id="app-form">
+  <section aria-label="Education" id="edu-section">
+    <div id="row-list"></div>
+    <button type="button" id="add-btn">Add</button>
+  </section>
+</form>
+<script>
+  (function () {
+    // No "X of Y" text anywhere — the button just stops working after 2
+    // clicks, with nothing announcing a limit. ynRepeaterExpand must detect
+    // the no-growth click and stop, not loop to maxAttempts.
+    var n = 0;
+    var hiddenCap = 2;
+    document.getElementById("add-btn").addEventListener("click", function () {
+      if (n >= hiddenCap) return;
+      n += 1;
+      var row = document.createElement("div");
+      row.className = "edu-row";
+      row.innerHTML = '<input class="school" />';
+      document.getElementById("row-list").appendChild(row);
+    });
+  })();
+</script>
+</body>
+</html>

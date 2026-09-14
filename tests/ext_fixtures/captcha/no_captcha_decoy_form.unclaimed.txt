@@ -1,0 +1,8 @@
+fixture: tests\ext_fixtures\captcha\no_captcha_decoy_form.html
+detected ats: unknown (unknown)
+unclaimed controls: 3
+
+tag	type	id	name	automation-id	visible	disabled	label
+input	text	hr-name	hr_contact	-	yes	no	Human Resources contact name hr_contact hr-name
+input	text	hr-role	is_hr	-	yes	no	Are you a Human Resources professional? is_hr hr-role
+input	text	sec-clearance	security_clearance	-	yes	no	Do you hold a current security clearance? security_clearance sec-clearance

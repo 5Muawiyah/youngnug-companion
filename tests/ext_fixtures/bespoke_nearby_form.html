@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Bespoke careers form — nearby-text extraction fixture</title>
+  </head>
+  <body>
+    <h1>Join AcmeCo — application form</h1>
+    <p>
+      A deliberately hostile bespoke form: no label elements, no aria, no
+      autocomplete, no name/id hints. Every question lives in the VISIBLE page
+      text near the field — the exact case the nearby-text fallback ("read the
+      actual page") exists for.
+    </p>
+
+    <!-- 1. question in a preceding sibling div -->
+    <div>First name</div>
+    <input id="nf1" type="text" />
+
+    <!-- 2. table layout: question in the preceding cell -->
+    <table>
+      <tr>
+        <td>Email address</td>
+        <td><input id="nf2" type="text" /></td>
+      </tr>
+    </table>
+
+    <!-- 3. fieldset legend around a TEXT input (not radio/checkbox) -->
+    <fieldset>
+      <legend>Phone number</legend>
+      <input id="nf3" type="text" />
+    </fieldset>
+
+    <!-- 4. free-text question as a heading above a bare textarea -->
+    <h3>Why do you want to join us?</h3>
+    <textarea id="nf4"></textarea>
+
+    <!-- 5. question as the wrapper's own inline text -->
+    <div>Postcode <input id="nf5" type="text" /></div>
+
+    <!-- 6. SENSITIVE question in nearby text — must be reported, never filled -->
+    <div>Do you have any unspent criminal convictions?</div>
+    <input id="nf6" type="text" />
+
+    <!-- 7. EEO question in nearby text — must be reported, never answered -->
+    <div>What is your ethnicity?</div>
+    <input id="nf7" type="text" />
+
+    <!-- 8. nearby text matching nothing — must stay unresolved -->
+    <div>Favourite colour</div>
+    <input id="nf8" type="text" />
+
+    <!-- 9. a REAL label — the structured rung must win, not nearby text -->
+    <div>Decoy nearby text that says nothing useful</div>
+    <label for="nf9">Last name</label>
+    <input id="nf9" type="text" />
+
+    <!-- 10. long prose containing the word phone — the >200-char guard must
+         refuse it; this input must stay unresolved -->
+    <p>
+      AcmeCo is a leading provider of enterprise solutions. Our phone-first
+      culture means we answer every customer call within three rings, and our
+      award-winning support team is available around the clock, every day of the
+      year, across all our regional offices and international locations.
+    </p>
+    <input id="nf10" type="text" />
+  </body>
+</html>

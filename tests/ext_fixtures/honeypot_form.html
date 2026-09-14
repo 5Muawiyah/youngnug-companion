@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply — Honeypot guard fixture</title>
+    <style>
+      .hidden-wrap {
+        display: none;
+      }
+      .offscreen {
+        position: absolute;
+        left: -10000px;
+        top: -10000px;
+        width: 1px;
+        height: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Apply to Acme Test Co</h1>
+    <form id="honeypot-form" action="#" onsubmit="return false;">
+      <!-- (a) normal visible text — MUST fill -->
+      <p>
+        <label for="first_name">First name</label>
+        <input
+          type="text"
+          id="first_name"
+          name="first_name"
+          autocomplete="given-name"
+        />
+      </p>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" autocomplete="email" />
+      </p>
+
+      <!-- (b) type=hidden named like a real field — must stay empty -->
+      <input
+        type="hidden"
+        id="hidden_email"
+        name="email_backup"
+        autocomplete="email"
+        value=""
+      />
+
+      <!-- (c) display:none-wrapped input — must stay empty -->
+      <div class="hidden-wrap">
+        <label for="hidden_phone">Phone</label>
+        <input type="tel" id="hidden_phone" name="phone" value="" />
+      </div>
+
+      <!-- (d) off-screen input — must stay empty -->
+      <p class="offscreen">
+        <label for="offscreen_city">City</label>
+        <input type="text" id="offscreen_city" name="city" value="" />
+      </p>
+
+      <!-- (e) VISIBLE honeypot with bot-trap label (Workday-shaped) — must stay empty -->
+      <p>
+        <label for="website_hp"
+          >This input is for robots only, do not enter if you're human.</label
+        >
+        <input
+          type="text"
+          id="website_hp"
+          name="website"
+          value=""
+        />
+      </p>
+
+      <!-- (f) near-zero opacity (0.02) honeypot — real-sounding name, visible box.
+           Judge evasion: opacity!=="0" so strict string match missed it; must stay EMPTY. -->
+      <p>
+        <label for="opacity_near_zero">Website</label>
+        <input
+          type="text"
+          id="opacity_near_zero"
+          name="website"
+          style="opacity: 0.02; width: 220px; height: 28px"
+          value=""
+        />
+      </p>
+
+      <!-- (g) partial opacity (0.5) — still visible in practice; MUST still fill.
+           Threshold is <0.1 so 0.5 is NOT treated as a trap. -->
+      <p>
+        <label for="opacity_half">Phone</label>
+        <input
+          type="tel"
+          id="opacity_half"
+          name="phone"
+          autocomplete="tel"
+          style="opacity: 0.5"
+          value=""
+        />
+      </p>
+
+      <p>
+        <button type="submit" id="submit-btn">Submit application</button>
+      </p>
+    </form>
+    <script>
+      window.__submitted = false;
+      var form = document.getElementById("honeypot-form");
+      var submitBtn = document.getElementById("submit-btn");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        window.__submitted = true;
+      });
+      submitBtn.addEventListener("click", function () {
+        window.__submitted = true;
+      });
+    </script>
+  </body>
+</html>

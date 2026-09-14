@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Ollama rung fixture — fields no deterministic rung can name
+    </title>
+  </head>
+  <body>
+    <h1>A few more details</h1>
+    <!-- labels deliberately match NO deterministic pattern -->
+    <label for="o1">Where can we reach you electronically?</label>
+    <input id="o1" type="text" />
+
+    <label for="o2">Your home region</label>
+    <input id="o2" type="text" />
+
+    <!-- EEO — must never even be SENT to the model -->
+    <label for="o3">What is your ethnicity?</label>
+    <input id="o3" type="text" />
+  </body>
+</html>

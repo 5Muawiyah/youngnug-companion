@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Oracle-style HCM apply page (representative fixture, not a capture of the live authenticated page)</title>
+<style>
+  /* Oracle JET / Cloud HCM ships aggressive global rules on generic
+     selectors. This is a representative reconstruction (no credentialed
+     access to the live page) of exactly the kind of rule the diagnosis
+     names as the hypothesis: unscoped selectors on div/span/
+     button with !important, which beats any INLINE style on the same tag. */
+  html, body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#f4f4f4; }
+  div, span, button, p, a {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .oracle-header { background:#003b57 !important; color:#fff !important; padding:16px 24px; }
+  .oracle-panel { max-width:820px; margin:32px auto; padding:24px; background:#fff !important; border:1px solid #ccc; }
+  .oracle-field { margin-bottom:16px; }
+  .oracle-field label { display:block; font-size:13px; margin-bottom:4px; }
+  .oracle-field input { width:100%; padding:8px; border:1px solid #999; box-sizing:border-box; }
+  .oracle-submit { background:#0572ce !important; color:#fff !important; padding:10px 28px; border:0; font-size:14px; }
+</style>
+</head>
+<body>
+  <div class="oracle-header"><span>ekbq.fa.em2.oraclecloud.com &mdash; Candidate Experience (representative fixture)</span></div>
+  <div class="oracle-panel">
+    <p>Section 1 of 4: Personal Information</p>
+    <div class="oracle-field"><label for="fname">First Name</label><input id="fname" name="fname"></div>
+    <div class="oracle-field"><label for="lname">Last Name</label><input id="lname" name="lname"></div>
+    <div class="oracle-field"><label for="phone">Phone Number</label><input id="phone" name="phone"></div>
+    <div class="oracle-field"><label for="email">Email</label><input id="email" name="email"></div>
+    <button class="oracle-submit" type="button">Continue</button>
+  </div>
+</body>
+</html>

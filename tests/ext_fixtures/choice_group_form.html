@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Choice-group fixture — option-label matching</title>
+  </head>
+  <body>
+    <h1>Your availability</h1>
+    <!-- 1. stored answer "1 month" must check EXACTLY the matching option -->
+    <fieldset>
+      <legend>Notice period</legend>
+      <label
+        ><input type="radio" name="notice" id="c_week" value="w" /> Less than 1
+        week</label
+      >
+      <label
+        ><input type="radio" name="notice" id="c_month" value="m" /> 1
+        month</label
+      >
+      <label
+        ><input type="radio" name="notice" id="c_three" value="q" /> 3
+        months</label
+      >
+    </fieldset>
+
+    <!-- 2. a group matching NO profile key must stay untouched -->
+    <fieldset>
+      <legend>How did you hear about us?</legend>
+      <label
+        ><input type="radio" name="hear" id="h_google" value="g" />
+        Google</label
+      >
+      <label
+        ><input type="radio" name="hear" id="h_friend" value="f" /> A
+        friend</label
+      >
+    </fieldset>
+  </body>
+</html>
