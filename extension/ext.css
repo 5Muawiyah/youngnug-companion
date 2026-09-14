@@ -1,0 +1,414 @@
+/* ext.css — the Companion's stylesheet, in the SITE's brand. Every colour,
+   radius and font stack below resolves to a token in the generated block,
+   which is copied verbatim from the site's design tokens (the one
+   design source) by the site's own generator. No hex may appear outside
+   that block. */
+/* GENERATED FROM the site's design tokens — do not hand-edit */
+:root {
+  --bg: #f5f8f5;
+  --surface: #ffffff;
+  --surface-sunken: #eef3ef;
+  --text: #12211b;
+  --muted: #5c6f67;
+  --border: #e4ebe6;
+  --border-strong: #cbd8d0;
+  --primary: #0b8160;
+  --primary-hover: #0a6e53;
+  --primary-tint: #effbf5;
+  --primary-contrast: #ffffff;
+  --primary-deep: #0a4c3a;
+  --accent: #ff7a59;
+  --accent-hover: #e85d3b;
+  --success: #0b8160;
+  --success-soft: #effbf5;
+  --warning: #8a5a12;
+  --warning-bg: #fdf3e2;
+  --danger: #c53035;
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(18, 33, 27, 0.04), 0 4px 12px rgba(18, 33, 27, 0.06);
+  --shadow-pop: 0 2px 4px rgba(18, 33, 27, 0.05), 0 8px 24px rgba(18, 33, 27, 0.1);
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+}
+/* END GENERATED */
+* {
+  box-sizing: border-box;
+}
+/* The `hidden` attribute must actually hide, whatever else we style. The UA
+   sheet's `[hidden] { display: none }` loses to ANY author `display` rule, so
+   `button.quiet { display: block }` below silently made `hidden` a no-op and
+   rendered dead buttons that had no click listener attached. Scoped to the
+   attribute rather than to those two classes so the next element to use
+   `hidden` cannot fall into the same trap. */
+[hidden] {
+  display: none !important;
+}
+body {
+  font-family: var(--font-ui);
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+.wrap {
+  padding: 12px;
+}
+/* The site's own lockup (its brand component and .brand rule): icon + wordmark on a light bar, display face, 19px/700 — WCAG
+   large text, which is what lets the coral "Nug" ink keep its 3:1 bar. */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--primary);
+}
+.brand-icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+.brand-nug {
+  color: var(--accent-hover);
+}
+.brand-page {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+/* Connection dot, now on the LIGHT brand bar: amber (warning family) while
+   unconnected, brand emerald once /api/me answers. */
+.brand .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+  margin-left: auto;
+}
+.brand .dot.ok {
+  background: var(--primary);
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  padding: 10px 12px;
+  margin: 0 0 10px;
+}
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 4px;
+  font-weight: 600;
+}
+.status-ok {
+  color: var(--success);
+}
+.status-bad {
+  color: var(--danger);
+}
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 2px 0;
+}
+button.primary,
+button.quiet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: var(--radius-xs);
+  padding: 8px 10px;
+  margin: 6px 0 0;
+  font-size: 13px;
+  font-family: var(--font-ui);
+  cursor: pointer;
+}
+button.primary {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border: 1px solid var(--primary-hover);
+  font-weight: 600;
+}
+button.primary:hover {
+  background: var(--primary-hover);
+}
+button.primary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+button.quiet {
+  background: var(--surface);
+  color: var(--primary-hover);
+  /* Same 1.4.11 reasoning as the stop control: the border is what makes
+     this read as a button at all, so it owes 3:1 and --border-strong does
+     not clear it. The site uses --border-strong for the same job; that is
+     the site's own contrast suite's call, and the rule here is that the
+     EXTENSION changes rather than the shared token. */
+  border: 1px solid var(--muted);
+}
+button.quiet:hover {
+  border-color: var(--primary);
+}
+/* Button icons. Sized in em so they track the button's own type, and drawn
+   in currentColor so they inherit whatever token the button set — an icon
+   with its own colour would be a palette the generator cannot see. */
+.ico {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  vertical-align: -0.18em;
+  margin-right: 6px;
+}
+
+/* ── The stop ────────────────────────────────────────────────────── */
+/* This was a checkbox in a row of settings. It is the most important
+   control in the extension and it now looks like it: full width, its own
+   icon, its own state word, and the danger token only when it is ON — an
+   always-red control is a control people stop reading. */
+.killswitch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+  /* --muted, not --border-strong: a control's resting boundary is a
+     non-text UI component and owes 3:1 (WCAG 1.4.11). --border-strong
+     measures 1.47:1 on --surface, which is a boundary you cannot see on a
+     dim screen — on THIS control that is not a cosmetic problem. The pair
+     table in tests/test_extension_branding.py is what caught it. */
+  border: 2px solid var(--muted);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-card);
+}
+.killswitch:hover {
+  border-color: var(--danger);
+}
+.killswitch:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.killswitch-ico {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+.killswitch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.killswitch-title {
+  font-weight: 700;
+  font-size: 15px;
+  font-family: var(--font-display);
+}
+.killswitch-state {
+  font-size: 12px;
+  color: var(--muted);
+}
+/* ON: the whole control turns danger-filled, so "is it stopped?" is
+   answerable from across the room and not from a tick mark. */
+.killswitch[aria-checked="true"] {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--primary-contrast);
+}
+.killswitch[aria-checked="true"] .killswitch-state {
+  color: var(--primary-contrast);
+}
+.killswitch[aria-checked="true"]:hover {
+  border-color: var(--text);
+}
+
+/* ── Warnings surface ────────────────────────────────────────────── */
+/* Hidden unless there is something true to say. Amber, never red: red is
+   reserved for the stop, and a warning that shouts as loudly as a stop
+   teaches people to ignore both. */
+.warn {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--warning);
+  background: var(--warning-bg);
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.warn strong {
+  display: block;
+  color: var(--warning);
+  font-size: 12px;
+}
+/* Plain fact list — one line each, no paragraph explaining the line. */
+.facts {
+  margin: 4px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+/* Developer capture-selector rules: each row pairs its text with an
+   icon-only delete, so the button keeps its full-width .quiet sizing from
+   collapsing the row. */
+#dev-rules li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  list-style: none;
+}
+#dev-rules button.quiet {
+  width: auto;
+  flex: none;
+  margin: 0;
+  padding: 2px 6px;
+}
+#dev-section input[type="text"] {
+  margin-bottom: 4px;
+}
+label {
+  font-weight: 600;
+  display: block;
+  margin: 8px 0 2px;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  width: 100%;
+  /* A text input's border IS its affordance — 1.4.11 again. */
+  border: 1px solid var(--muted);
+  border-radius: var(--radius-xs);
+  padding: 7px 9px;
+  font-size: 13px;
+  font-family: var(--font-ui);
+  background: var(--surface);
+}
+input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+  border-color: var(--primary);
+}
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  margin: 10px 0;
+  padding: 8px 12px;
+}
+legend {
+  font-weight: 700;
+  padding: 0 4px;
+}
+.note {
+  background: var(--warning-bg);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-xs);
+  padding: 8px 10px;
+  font-size: 12px;
+  margin: 8px 0;
+}
+a {
+  color: var(--primary);
+}
+.footer-link {
+  display: block;
+  text-align: center;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+/* ── Fill report (popup) ─────────────────────────────────────────── */
+.fill-report {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border);
+  background: var(--surface-sunken);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.fill-report p {
+  margin: 0 0 4px;
+}
+.fill-report p:last-child {
+  margin-bottom: 0;
+}
+.fill-ats {
+  font-weight: 600;
+  color: var(--primary-hover);
+}
+.fill-check {
+  color: var(--warning);
+}
+.fill-miss {
+  color: var(--muted);
+}
+.fill-never {
+  font-weight: 600;
+  /* Deep brand text, not --success: on the report's --surface-sunken well
+     the vivid green measures 4.33:1 (fails AA for 12px text); --primary-deep
+     is the site's own text-on-tint member of the family (8.8:1 here). */
+  color: var(--primary-deep);
+  margin-top: 6px !important;
+}
+
+/* ── Page-side field highlights (content scripts / engine) ───────── */
+/* Injected class names on ATS form controls — unobtrusive outlines.
+   content/dom_fill_kit.js paints the SAME colours inline on host pages
+   (via yn_theme.js values); these rules cover popup-rendered surfaces. */
+.yn-fill-ok {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 1px;
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent) !important;
+  transition:
+    outline-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.yn-fill-check {
+  outline: 2px solid var(--warning) !important;
+  outline-offset: 1px;
+  background-color: color-mix(in srgb, var(--warning) 10%, transparent) !important;
+  transition:
+    outline-color 0.15s ease,
+    background-color 0.15s ease;
+}
+.yn-fill-missed {
+  outline: 2px solid var(--border-strong) !important;
+  outline-offset: 1px;
+  background-color: color-mix(in srgb, var(--border-strong) 20%, transparent) !important;
+}
+
+/* Floating filled/total badge on the application page */
+.yn-badge {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 2147483646;
+  min-width: 2.5rem;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font: 600 12px/1.4 var(--font-ui);
+  text-align: center;
+  box-shadow: var(--shadow-pop);
+  pointer-events: none;
+}

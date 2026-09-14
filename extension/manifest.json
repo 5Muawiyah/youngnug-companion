@@ -1,0 +1,75 @@
+{
+  "manifest_version": 3,
+  "name": "YoungNug Companion",
+  "version": "0.19.0",
+  "description": "Your YoungNug helper: capture any job, read company sentiment, and fill applications, in YOUR own browser session. Runs ONLY when you click it. Captcha = stop. Never auto-submits.",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YoungNug"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+Y"
+      },
+      "description": "Open the YoungNug Companion"
+    },
+    "capture-current-tab": {
+      "suggested_key": {
+        "default": "Alt+Shift+U"
+      },
+      "description": "Save this job to YoungNug"
+    }
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabGroups",
+    "userScripts"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "http://127.0.0.1:8010/*",
+    "http://localhost:8010/*",
+    "https://youngnug.com/*",
+    "https://*.youngnug.com/*",
+    "https://youngnug.pages.dev/*",
+    "https://api.github.com/*"
+  ],
+  "optional_host_permissions": [
+    "http://127.0.0.1:11434/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://127.0.0.1:8000/*",
+        "http://localhost:8000/*",
+        "http://127.0.0.1:8010/*",
+        "http://localhost:8010/*",
+        "http://localhost:5173/*",
+        "http://127.0.0.1:5173/*",
+        "http://localhost:5183/*",
+        "http://127.0.0.1:5183/*",
+        "https://youngnug.com/*",
+        "https://*.youngnug.com/*",
+        "https://youngnug.pages.dev/*"
+      ],
+      "js": [
+        "common/api.js",
+        "common/challenge_detect.js",
+        "content/app_bridge.js"
+      ]
+    }
+  ]
+}

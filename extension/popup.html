@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YoungNug</title>
+    <link rel="stylesheet" href="ext.css" />
+    <style>
+      body {
+        width: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The site's own lockup (Brand.tsx): icon + wordmark, one JSX-style
+         text run so the accessible name is exactly "YoungNug". The dot is
+         the live connection light. -->
+    <div class="brand">
+      <img
+        class="brand-icon"
+        src="icons/icon-48.png"
+        alt=""
+        width="26"
+        height="26"
+      />
+      <span class="brand-name">Young<span class="brand-nug">Nug</span></span>
+      <span class="brand-page">Companion</span>
+      <span id="dot" class="dot"></span>
+    </div>
+    <div class="wrap">
+      <!-- WARNINGS SURFACE. Empty and hidden unless there is something true
+           to say: the platform's own notice for this account, or the fact
+           that the Companion is stopped. role=status so it is announced when
+           it appears rather than only on focus. -->
+      <div id="warn" class="warn" role="status" hidden></div>
+
+      <div class="card">
+        <p id="conn" class="status-line">Checking connection…</p>
+        <p id="conn-detail" class="muted"></p>
+        <!-- What it can do HERE, one line — only while it is actually true
+             (connected, running). Hidden the rest of the time rather than
+             saying something the state above already contradicts. -->
+        <p id="context-line" class="muted" hidden></p>
+      </div>
+
+      <!-- Icon + two words. The full sentence lives in aria-label, so the
+           accessible name still says exactly what the button does while the
+           face of the button stops explaining it. -->
+      <div class="card">
+        <button
+          id="capture"
+          class="primary"
+          aria-label="Save this job to YoungNug"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Save job
+        </button>
+        <button
+          id="apply"
+          class="primary"
+          aria-label="Fill this form from your profile: a dry run, nothing is submitted"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M4 20h16M4 15.5 15 4.5a2.1 2.1 0 0 1 3 3L7 18.5l-4 1z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Fill form
+        </button>
+        <!-- Icon-only: reverts only what the last fill on this page wrote,
+             never a value the student typed themselves. -->
+        <button id="undo" class="quiet" aria-label="Undo fill">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M8 8 4 12l4 4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M4 12h9a5 5 0 0 1 0 10h-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button
+          id="save-answers"
+          class="quiet"
+          aria-label="Save my answers to YoungNug"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 19V5m0 0-6 6m6-6 6 6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Save answers
+        </button>
+        <button
+          id="li-import"
+          class="quiet"
+          hidden
+          aria-label="Fill my YoungNug profile from this page"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 5v14m0 0 6-6m-6 6-6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Import profile
+        </button>
+        <button
+          id="gh-import"
+          class="quiet"
+          hidden
+          aria-label="Import my public GitHub repositories"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="m9 18-5-6 5-6m6 12 5-6-5-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Import GitHub
+        </button>
+        <p id="status" class="muted" aria-live="polite"></p>
+        <div id="fill-report" class="fill-report" hidden></div>
+        <div id="confirm-applied" class="fill-report" hidden></div>
+      </div>
+
+      <div class="card" id="posting-card" hidden>
+        <p class="status-line">Indeed posting</p>
+        <select id="posting-listing"></select>
+        <button id="posting-prepare" class="primary">
+          Prepare Indeed posting
+        </button>
+        <p id="posting-status" class="muted" aria-live="polite"></p>
+        <div id="posting-report" class="fill-report" hidden></div>
+        <div id="confirm-posted" class="fill-report" hidden></div>
+      </div>
+
+      <!-- THE STOP. It was a checkbox in a row of settings, which is the one
+           thing it must never look like: this is the most important control
+           in the extension and it is now the largest. role="switch" +
+           aria-checked keeps it a real toggle for assistive tech, and it is
+           the one control, in both directions: the same press that stops it
+           starts it again, exactly the switch the options page already
+           used. The title never changes; only the state word does. -->
+      <button
+        id="kill"
+        class="killswitch"
+        type="button"
+        role="switch"
+        aria-checked="false"
+      >
+        <svg class="killswitch-ico" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 3v9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M7.5 6.4a7.5 7.5 0 1 0 9 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <span class="killswitch-text">
+          <span class="killswitch-title">Stop everything</span>
+          <span class="killswitch-state" id="kill-state">Running</span>
+        </span>
+      </button>
+
+      <!-- Advanced / developer: per-site capture selectors, collapsed by
+           default (uBlock Origin Lite's "Custom filters" pattern) so it adds
+           nothing to what a student sees on open. Selectors only — never a
+           script, never a URL — and the note states plainly which rules are
+           NOT editable from here. -->
+      <details id="dev-section">
+        <summary class="muted">Advanced</summary>
+        <div class="note">
+          Selectors only, never a script. Never-submit, the captcha and
+          login-wall stops, personal-use stamping and the daily budget are
+          not editable here.
+        </div>
+        <label for="dev-pattern">Site (hostname)</label>
+        <input id="dev-pattern" type="text" placeholder="jobs.example.com" />
+        <label for="dev-title">Title selector</label>
+        <input id="dev-title" type="text" placeholder=".job-title" />
+        <label for="dev-body">Body selector</label>
+        <input id="dev-body" type="text" placeholder="#job-description" />
+        <button id="dev-add" class="quiet" type="button">Add rule</button>
+        <p id="dev-msg" class="muted" role="status"></p>
+        <ul id="dev-rules" class="facts"></ul>
+      </details>
+
+      <a href="#" id="opts" class="footer-link">Options</a>
+    </div>
+    <!-- api.js first: popup.js paces multi-card captures with its ynJitter -->
+    <script src="common/api.js"></script>
+    <script src="common/inject_once.js"></script>
+    <!-- The same label-quality gate the fill engine applies to a candidate
+         label (common/label_quality.js) — the popup's own report renderer
+         needs it too, so a cryptic id never leaks into a "check these" line
+         just because it arrived here as a fallback fieldKey. -->
+    <script src="common/label_quality.js"></script>
+    <!-- the popup's Capture handler reads own-rule ## selectors from
+         here (capture_click.js) alongside the older per-site dev rules. -->
+    <script src="common/own_rules.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

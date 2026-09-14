@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YoungNug Companion options</title>
+    <link rel="stylesheet" href="ext.css" />
+    <style>
+      body {
+        max-width: 520px;
+        margin: 2em auto;
+        background: var(--bg);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The site's own lockup (Brand.tsx): icon + wordmark. -->
+    <div class="brand">
+      <img
+        class="brand-icon"
+        src="icons/icon-48.png"
+        alt=""
+        width="26"
+        height="26"
+      />
+      <span class="brand-name">Young<span class="brand-nug">Nug</span></span>
+      <span class="brand-page">Options</span>
+    </div>
+    <div class="wrap">
+      <!-- The same warnings surface as the popup: hidden unless there is
+           something true to say. -->
+      <div id="warn" class="warn" role="status" hidden></div>
+
+      <!-- THE STOP, first on the page and the largest control on it. -->
+      <button
+        id="kill"
+        class="killswitch"
+        type="button"
+        role="switch"
+        aria-checked="false"
+      >
+        <svg class="killswitch-ico" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 3v9"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M7.5 6.4a7.5 7.5 0 1 0 9 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+        <span class="killswitch-text">
+          <span class="killswitch-title">Stop everything</span>
+          <span class="killswitch-state" id="kill-state">Running</span>
+        </span>
+      </button>
+      <!-- The keyboard shortcuts, read from what Chrome ACTUALLY registered
+           rather than hardcoded. Chrome silently declines a suggested key it
+           cannot assign (a conflict with another extension, or with the
+           browser itself), so a hardcoded string here would tell a student to
+           press a key that does nothing. Hidden entirely when no shortcut is
+           registered. -->
+      <div class="card" id="shortcuts-card" hidden>
+        <p class="status-line">Keyboard</p>
+        <ul class="facts" id="shortcuts"></ul>
+      </div>
+
+      <!-- Decision 5: assist mode (the per-site toggle card, its "What it
+           does" bullets and "Works offline.") is deleted as a concept
+           everywhere. This page is the switch above, the shortcuts, the
+           own-rules/user-scripts sections below and the manual-token
+           fallback -- nothing else. -->
+
+      <details>
+        <summary class="muted">Advanced: account token</summary>
+        <div class="note">If auto-connect fails.</div>
+        <label for="token">Account token</label>
+        <input id="token" type="password" />
+      </details>
+
+      <!-- the student's OWN per-site rules, adblock-filter style. See
+           extension/MESSAGE_CONTRACT.md's Own rules table for the
+           syntax. Saved by the SAME Save button as the account token
+           below, so there is one place a change here takes effect. -->
+      <details id="own-rules-section">
+        <summary class="muted">Own rules</summary>
+        <p class="note">One rule per line.</p>
+        <textarea
+          id="own-rules-text"
+          rows="6"
+          aria-label="Own rules, one per line"
+        ></textarea>
+        <p id="own-rules-errors" class="fill-miss" hidden></p>
+        <p>
+          <input id="own-rules-file" type="file" accept=".txt" hidden />
+          <button
+            id="own-rules-import"
+            class="quiet"
+            type="button"
+            aria-label="Import rules from a file"
+            title="Import rules from a file"
+          >
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 16V4M7 9l5-5 5 5M5 20h14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            id="own-rules-export"
+            class="quiet"
+            type="button"
+            aria-label="Export rules as a file"
+            title="Export rules as a file"
+          >
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 4v12M7 11l5 5 5-5M5 20h14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </p>
+      </details>
+
+      <!-- chrome.userScripts, gated behind the browser's own per-
+           extension "Allow user scripts" toggle (off by default). When it
+           is off, #user-scripts-unavailable is the ONE line (filled in by
+           JS, empty in this markup so it never counts against the page's
+           own word budget) plus the ONE icon (#us-copy-enable-url) next to
+           it — nothing else renders. When it is on,
+           #user-scripts-available shows instead. -->
+      <details id="user-scripts-section">
+        <summary class="muted">User scripts</summary>
+        <p id="user-scripts-unavailable" class="note" hidden></p>
+        <button
+          id="us-copy-enable-url"
+          class="quiet"
+          type="button"
+          hidden
+          aria-label="Copy the chrome extensions link"
+          title="Copy the chrome extensions link"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <rect
+              x="9"
+              y="9"
+              width="11"
+              height="11"
+              rx="1.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M5 15V6a1.5 1.5 0 0 1 1.5-1.5H15"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+        <div id="user-scripts-available" hidden>
+          <p class="note">Your own code. It can submit forms. The Companion never does.</p>
+          <ul class="facts" id="user-scripts-list"></ul>
+          <label for="us-name">Name</label>
+          <input id="us-name" type="text" maxlength="80" />
+          <label for="us-matches">Site patterns</label>
+          <textarea id="us-matches" rows="2"></textarea>
+          <label for="us-code">Code</label>
+          <textarea id="us-code" rows="4"></textarea>
+          <p id="us-msg" class="muted" aria-live="polite"></p>
+          <button
+            id="us-add"
+            class="primary"
+            type="button"
+            aria-label="Add script"
+            title="Add script"
+          >
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 5v14M5 12h14"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </details>
+
+      <p>
+        <button
+          id="save"
+          class="primary"
+          type="button"
+          aria-label="Save"
+          title="Save"
+        >
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M5 12.5 10 17l9-10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <span id="msg" class="muted"></span>
+      </p>
+      <a
+        href="https://youngnug.com/settings"
+        target="_blank"
+        rel="noreferrer"
+        class="footer-link"
+        >Account settings</a
+      >
+    </div>
+    <!-- api.js first: options.js reads the merged settings via ynSettings -->
+    <script src="common/api.js"></script>
+    <script src="common/own_rules.js"></script>
+    <script src="common/user_scripts.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
