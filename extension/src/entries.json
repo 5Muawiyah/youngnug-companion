@@ -1,0 +1,195 @@
+{
+  "_comment": "Maps a shipped file path (relative to extension/) to the esbuild entry point that builds it (relative to extension/) and, when the original file also assigned a Node module.exports (for the fixtures that require() a shipped file directly), the list of names that footer carried. Read by the build script, the drift test and the module graph test, so all three agree on one list. A shipped path with no entry here has not been migrated yet: it is still the literal source file esbuild does not touch. node_exports names are read off globalThis by the build script and appended to the built file OUTSIDE the esbuild bundle, never written as literal module.exports source inside the bundled ES modules themselves (esbuild treats a real module.exports assignment inside bundled source as a signal to wrap the whole bundle as a lazy CommonJS module, which stops its top-level globalThis assignments from running eagerly when the shipped file is injected as a classic script).",
+  "background.js": {
+    "entry": "src/ui/background/index.js"
+  },
+  "common/api.js": {
+    "entry": "src/common/api/index.js"
+  },
+  "common/challenge_detect.js": {
+    "entry": "src/common/challenge_detect/index.js"
+  },
+  "common/inject_once.js": {
+    "entry": "src/common/inject_once/index.js"
+  },
+  "common/label_quality.js": {
+    "entry": "src/common/label_quality/index.js"
+  },
+  "common/liveness_markers.js": {
+    "entry": "src/common/liveness_markers/index.js"
+  },
+  "common/own_rules.js": {
+    "entry": "src/common/own_rules/index.js"
+  },
+  "common/overlay_box.js": {
+    "entry": "src/common/overlay_box/index.js"
+  },
+  "common/user_scripts.js": {
+    "entry": "src/common/user_scripts/index.js"
+  },
+  "common/placeholder.js": {
+    "entry": "src/common/placeholder/index.js",
+    "node_exports": [
+      "ynIsPlaceholderText",
+      "ynIsPlaceholderPhone",
+      "ynIsPlaceholderValue"
+    ]
+  },
+  "content/adapters/ashby.js": {
+    "entry": "src/adapters/ashby/index.js"
+  },
+  "content/adapters/dover.js": {
+    "entry": "src/adapters/dover/index.js"
+  },
+  "content/adapters/greenhouse.js": {
+    "entry": "src/adapters/greenhouse/index.js"
+  },
+  "content/adapters/icims.js": {
+    "entry": "src/adapters/icims/index.js"
+  },
+  "content/adapters/indeed_apply.js": {
+    "entry": "src/adapters/indeed_apply/index.js"
+  },
+  "content/adapters/indeed_employer.js": {
+    "entry": "src/adapters/indeed_employer/index.js"
+  },
+  "content/adapters/lever.js": {
+    "entry": "src/adapters/lever/index.js"
+  },
+  "content/adapters/linkedin_easy_apply.js": {
+    "entry": "src/adapters/linkedin_easy_apply/index.js"
+  },
+  "content/adapters/personio.js": {
+    "entry": "src/adapters/personio/index.js"
+  },
+  "content/adapters/pinpoint.js": {
+    "entry": "src/adapters/pinpoint/index.js"
+  },
+  "content/adapters/recruitee.js": {
+    "entry": "src/adapters/recruitee/index.js"
+  },
+  "content/adapters/reed.js": {
+    "entry": "src/adapters/reed/index.js"
+  },
+  "content/adapters/reopen.js": {
+    "entry": "src/adapters/reopen/index.js",
+    "node_exports": [
+      "ynAdapterReopenSection"
+    ]
+  },
+  "content/adapters/smartrecruiters.js": {
+    "entry": "src/adapters/smartrecruiters/index.js"
+  },
+  "content/adapters/successfactors.js": {
+    "entry": "src/adapters/successfactors/index.js"
+  },
+  "content/adapters/taleo.js": {
+    "entry": "src/adapters/taleo/index.js"
+  },
+  "content/adapters/teamtailor.js": {
+    "entry": "src/adapters/teamtailor/index.js"
+  },
+  "content/adapters/url_scope.js": {
+    "entry": "src/adapters/url_scope/index.js",
+    "node_exports": [
+      "ynWithinApplicationScope",
+      "ynUrlScopeIdentityTokens",
+      "ynUrlScopeRouteSegments"
+    ]
+  },
+  "content/adapters/workable.js": {
+    "entry": "src/adapters/workable/index.js"
+  },
+  "content/adapters/workday.js": {
+    "entry": "src/adapters/workday/index.js"
+  },
+  "content/app_bridge.js": {
+    "entry": "src/ui/app_bridge/index.js"
+  },
+  "content/aria_driver.js": {
+    "entry": "src/kit/aria_driver/index.js",
+    "node_exports": [
+      "ynAriaIsPopupControl",
+      "ynAriaIsChoice",
+      "ynAriaControlValue",
+      "ynAriaFillPopup",
+      "ynAriaFillChoice",
+      "ynAriaGroupMembers"
+    ]
+  },
+  "content/assist.js": {
+    "entry": "src/ui/assist/index.js"
+  },
+  "content/capture.js": {
+    "entry": "src/ui/capture/index.js"
+  },
+  "content/detect.js": {
+    "entry": "src/engine/detect/index.js"
+  },
+  "content/dom_fill_kit.js": {
+    "entry": "src/kit/dom_fill_kit/index.js"
+  },
+  "content/engine.js": {
+    "entry": "src/engine/engine/index.js"
+  },
+  "content/filler.js": {
+    "entry": "src/filler/filler/index.js"
+  },
+  "content/glassdoor.js": {
+    "entry": "src/ui/glassdoor/index.js"
+  },
+  "content/heuristics.js": {
+    "entry": "src/engine/heuristics/index.js"
+  },
+  "content/linkedin_profile.js": {
+    "entry": "src/ui/linkedin_profile/index.js"
+  },
+  "content/liveness_check.js": {
+    "entry": "src/ui/liveness_check/index.js"
+  },
+  "content/password_kit.js": {
+    "entry": "src/kit/password_kit/index.js"
+  },
+  "content/posting_filler.js": {
+    "entry": "src/ui/posting_filler/index.js"
+  },
+  "content/repeater.js": {
+    "entry": "src/engine/repeater/index.js",
+    "node_exports": [
+      "ynRepeaterAccessibleName",
+      "ynRepeaterLooksLikeAddControl",
+      "ynRepeaterCountsFrom",
+      "ynRepeaterFindAddControl",
+      "ynRepeaterExpand"
+    ]
+  },
+  "content/resolver_ping.js": {
+    "entry": "src/ui/resolver_ping/index.js"
+  },
+  "content/review_screen.js": {
+    "entry": "src/ui/review_screen/index.js"
+  },
+  "content/settle_observer.js": {
+    "entry": "src/engine/settle_observer/index.js",
+    "node_exports": [
+      "ynSettleWrite",
+      "ynClassifyHold",
+      "ynVerifyWrites"
+    ]
+  },
+  "content/skills_fill.js": {
+    "entry": "src/engine/skills_fill/index.js",
+    "node_exports": [
+      "ynFillSkills",
+      "ynFillCheckboxGroup",
+      "ynSkillCandidates",
+      "ynPickSkillMatch"
+    ]
+  },
+  "options.js": {
+    "entry": "src/ui/options/index.js"
+  },
+  "popup.js": {
+    "entry": "src/ui/popup/index.js"
+  }
+}
